@@ -6,8 +6,8 @@ public class GameWorld
     protected Team teamB;
     protected int sizeX;
     protected int sizeY;
-
     protected MapTile[][] gameWorld;
+
 
     protected GameWorld(int sizeX, int sizeY)
     {

@@ -10,14 +10,15 @@ public class Runner
 {
     Client client = new Client();
     //constants
-    static final protected int FINAL_TURN = 2000;
 
     //current turn number
     protected int turn;
 
     GameWorld world;
+    protected GameWorld[] pastTurns;
 
-    
+
+
     //list of all of the robots
     ArrayList<RobotPlayer> robotPlayers;
     //robots created during the turn
@@ -28,6 +29,7 @@ public class Runner
     //instantiates a runner object
     protected Runner(){
         world = new GameWorld(30, 30);
+        pastTurns = new GameWorld[GameConstants.MAX_TURN_COUNT];
         robotPlayers = new ArrayList<>();
         toAdd = new ArrayList<>();
         toRemove = new ArrayList<>();
@@ -65,13 +67,14 @@ public class Runner
         }
         //these should already be added to the map
         robotPlayers.addAll(toAdd);
+        pastTurns[turn] = new GameWorld(world);
         turn++;
     }
 
     //returns whether the current game is active
     protected boolean active(){
         System.out.println(turn);
-        return turn < FINAL_TURN;
+        return turn < GameConstants.MAX_TURN_COUNT;
     }
 }
 

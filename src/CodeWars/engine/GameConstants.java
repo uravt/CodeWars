@@ -9,7 +9,7 @@ public class GameConstants
     static final int[] COOLDOWN_ATTACK = {20, 15, 25, 15, 0};
     static final int[] COOLDOWN_MINE = {20, 20, 5, 20, 0};
     static final int[] VISION_RADIUS = {20, 20, 20, 20, 20};
-
+    static final int MAX_TURN_COUNT = 2000;
 
 
 }
