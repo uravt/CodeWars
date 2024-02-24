@@ -70,6 +70,7 @@ public class Runner
 
     //returns whether the current game is active
     protected boolean active(){
+        System.out.println(turn);
         return turn < FINAL_TURN;
     }
 }
