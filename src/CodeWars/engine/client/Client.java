@@ -6,8 +6,8 @@ import java.util.List;
 
 public class Client
 {
-        UI ui = new UI();
-        Map map = new Map(ui);
+        UI ui;
+        Map map;
 
         public Client()
         {
