@@ -44,7 +44,9 @@ public class Runner
                 try {
                     robotPlayer.run(tempRobotUser);
                     robotPlayer.getRobot().cooldownAction -= 10;
+                    robotPlayer.getRobot().cooldownAction = Math.max(robotPlayer.getRobot().cooldownAction, 0);
                     robotPlayer.getRobot().cooldownMove -= 10;
+                    robotPlayer.getRobot().cooldownMove = Math.max(robotPlayer.getRobot().cooldownMove, 0);
                 }
                 catch(Exception e){
                     System.out.println("hi!");
