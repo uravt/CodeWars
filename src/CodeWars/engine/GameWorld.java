@@ -11,8 +11,8 @@ public class GameWorld
 
     protected GameWorld(int sizeX, int sizeY)
     {
-        teamA = new Team(0);
-        teamB = new Team(1);
+        teamA = new Team(1);
+        teamB = new Team(2);
         gameWorld = new MapTile[sizeY][sizeX];
     }
 

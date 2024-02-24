@@ -41,7 +41,15 @@ public class Runner
         for(RobotPlayer robotPlayer : robotPlayers){
             if(robotPlayer.alive()){
                 RobotUser tempRobotUser = new RobotUser(robotPlayer.getRobot(), world);
-                robotPlayer.run(tempRobotUser);
+                try {
+                    robotPlayer.run(tempRobotUser);
+                    robotPlayer.getRobot().cooldownAction -= 10;
+                    robotPlayer.getRobot().cooldownMove -= 10;
+                }
+                catch(Exception e){
+                    System.out.println("hi!");
+                    toRemove.add(robotPlayer);
+                }
                 if(tempRobotUser.spawned != null){
                     switch(robotPlayer.getPlayerID()){
                         case 1:

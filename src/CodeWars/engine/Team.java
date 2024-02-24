@@ -3,29 +3,37 @@ package CodeWars.engine;
 public class Team
 {
     public int team;
-    private int numberIron;
-    private int numberSilicon;
+    private int numIron;
+    private int numSilicon;
 
     public Team(int team)
     {
         this.team = team;
-        this.numberIron = 0;
-        this.numberSilicon = 0;
+        this.numIron = 0;
+        this.numSilicon = 0;
     }
 
     public Team(Team other)
     {
         this.team = other.team;
-        this.numberIron = other.numberIron;
-        this.numberSilicon = other.numberSilicon;
+        this.numIron = other.numIron;
+        this.numSilicon = other.numSilicon;
     }
 
     protected int getIron()
     {
-        return numberIron;
+        return numIron;
     }
     protected int getSilicon()
     {
-        return numberSilicon;
+        return numSilicon;
+    }
+    protected void setSilicon(int s)
+    {
+         numSilicon = s;
+    }
+    protected void setIron(int s)
+    {
+        numIron = s;
     }
 }

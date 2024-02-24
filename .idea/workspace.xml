@@ -4,11 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3cd76a97-2922-4c9c-8a31-f31c0123d23e" name="Changes" comment="grid stuff">
-      <change afterPath="$PROJECT_DIR$/src/CodeWars/engine/Team.java" afterDir="false" />
+    <list default="true" id="3cd76a97-2922-4c9c-8a31-f31c0123d23e" name="Changes" comment="some runner and direction stuff">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/CodeWars/engine/GameConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/CodeWars/engine/GameConstants.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/CodeWars/engine/GameWorld.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/CodeWars/engine/GameWorld.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/CodeWars/engine/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/CodeWars/engine/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/CodeWars/engine/MapTile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/CodeWars/engine/MapTile.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/CodeWars/engine/Point.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/CodeWars/engine/Point.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/CodeWars/engine/RobotInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/CodeWars/engine/RobotInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/CodeWars/engine/RobotUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/CodeWars/engine/RobotUser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/CodeWars/engine/Runner.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/CodeWars/engine/Runner.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/CodeWars/engine/Team.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/CodeWars/engine/Team.java" afterDir="false" />
     </list>
     <list id="2cfe8a18-1c19-4993-8531-d9849a380bd0" name="Changes by Jack" comment="" />
     <list id="2f3b03d6-b12e-4b83-86e1-87fa8f53cb92" name="Changes by sethlifland" comment="" />
@@ -112,7 +117,7 @@
       <option name="presentableId" value="Default" />
       <updated>1708800508674</updated>
       <workItem from="1708800509675" duration="7102000" />
-      <workItem from="1708810061732" duration="607000" />
+      <workItem from="1708810061732" duration="1460000" />
     </task>
     <task id="LOCAL-00001" summary="altered structure">
       <option name="closed" value="true" />
@@ -122,13 +127,13 @@
       <option name="project" value="LOCAL" />
       <updated>1708800976735</updated>
     </task>
-    <task id="LOCAL-00002" summary="grid stuff">
+    <task id="LOCAL-00002" summary="some runner and direction stuff">
       <option name="closed" value="true" />
-      <created>1708811282572</created>
+      <created>1708810882203</created>
       <option name="number" value="00002" />
       <option name="presentableId" value="LOCAL-00002" />
       <option name="project" value="LOCAL" />
-      <updated>1708811282572</updated>
+      <updated>1708810882203</updated>
     </task>
     <option name="localTasksCounter" value="3" />
     <servers />
@@ -138,8 +143,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="altered structure" />
-    <MESSAGE value="grid stuff" />
-    <option name="LAST_COMMIT_MESSAGE" value="grid stuff" />
+    <MESSAGE value="some runner and direction stuff" />
+    <option name="LAST_COMMIT_MESSAGE" value="some runner and direction stuff" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
