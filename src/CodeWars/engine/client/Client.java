@@ -1,16 +1,17 @@
 package CodeWars.engine.client;
-import javax.swing.*;
+import java.awt.*;
+import java.io.IOException;
+import java.util.*;
+import java.util.List;
 
 public class Client
 {
-    TileMap map = new TileMap();
-    JFrame frame = new JFrame();
+        UI ui;
+        Map map;
 
-    public Client()
-    {
-        frame = new JFrame();
-        frame.setSize(500, 600);
-        frame.setVisible(true);
+        public Client()
+        {
+            ui = new UI();
+            Map map = new Map(ui);
+        }
     }
-
-}
