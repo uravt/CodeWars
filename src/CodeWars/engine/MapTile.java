@@ -2,29 +2,37 @@ package CodeWars.engine;
 
 public class MapTile
 {
-    boolean hasMetalDeposit;
-    boolean hasSiliconDeposit;
-    boolean isPassable;
+    int numIron;
+    int numSilicon;
+    boolean passable;
     //This value is null if no Robot is present on the tile
     RobotInfo robotInfoOnTile;
     //location of the tile
-    Point mapLocation;
+    Point point;
 
-    public MapTile(boolean hasMetalDeposit, boolean hasSiliconDeposit, boolean isPassable, RobotInfo robotInfoOnTile, Point mapLocation)
+    public MapTile(int numIron, int numSilicon, boolean passable, RobotInfo robotInfoOnTile, Point mapLocation)
     {
-        this.hasMetalDeposit = hasMetalDeposit;
-        this.hasSiliconDeposit = hasSiliconDeposit;
-        this.isPassable = isPassable;
+        this.numIron = numIron;
+        this.numSilicon = numSilicon;
+        this.passable = passable;
         this.robotInfoOnTile = robotInfoOnTile;
-        this.mapLocation = mapLocation;
+        this.point = mapLocation;
     }
 
     public MapTile(MapTile other)
     {
-        this.hasMetalDeposit = other.hasMetalDeposit;
-        this.hasSiliconDeposit = other.hasSiliconDeposit;
-        this.isPassable = other.isPassable;
+        this.numIron = other.numIron;
+        this.numSilicon = other.numSilicon;
+        this.passable = other.passable;
         this.robotInfoOnTile = new RobotInfo(other.robotInfoOnTile);
-        this.mapLocation = new Point(other.mapLocation);
+        this.point = new Point(other.point);
+    }
+
+    public MapTile(int x, int y){
+        this.numIron = 0;
+        this.numSilicon = 0;
+        this.passable = true;
+        this.robotInfoOnTile = null;
+        this.point = new Point(x, y);
     }
 }

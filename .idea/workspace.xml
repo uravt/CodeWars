@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3cd76a97-2922-4c9c-8a31-f31c0123d23e" name="Changes" comment="graphics">
-      <change afterPath="$PROJECT_DIR$/images/scifiStructure_01.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/scifiTile_02.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/scifiTile_42.png" afterDir="false" />
+    <list default="true" id="3cd76a97-2922-4c9c-8a31-f31c0123d23e" name="Changes" comment="fixed my first bug!">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <list id="2cfe8a18-1c19-4993-8531-d9849a380bd0" name="Changes by Jack" comment="" />
@@ -75,11 +72,6 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
-  <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\Jack\IdeaProjects\CodeWars\images" />
-    </key>
-  </component>
   <component name="RunManager">
     <configuration name="Client" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="CodeWars.engine.client.Client" />
@@ -117,7 +109,7 @@
       <option name="presentableId" value="Default" />
       <updated>1708800508674</updated>
       <workItem from="1708800509675" duration="7102000" />
-      <workItem from="1708810061732" duration="607000" />
+      <workItem from="1708810061732" duration="1460000" />
     </task>
     <task id="LOCAL-00001" summary="altered structure">
       <option name="closed" value="true" />
@@ -127,23 +119,39 @@
       <option name="project" value="LOCAL" />
       <updated>1708800976735</updated>
     </task>
-    <task id="LOCAL-00002" summary="grid stuff">
+    <task id="LOCAL-00002" summary="some runner and direction stuff">
       <option name="closed" value="true" />
-      <created>1708811282572</created>
+      <created>1708810882203</created>
       <option name="number" value="00002" />
       <option name="presentableId" value="LOCAL-00002" />
       <option name="project" value="LOCAL" />
-      <updated>1708811282572</updated>
+      <updated>1708810882203</updated>
     </task>
-    <task id="LOCAL-00003" summary="graphics">
+    <task id="LOCAL-00003" summary="ton of stuff">
       <option name="closed" value="true" />
-      <created>1708814197688</created>
+      <created>1708815898477</created>
       <option name="number" value="00003" />
       <option name="presentableId" value="LOCAL-00003" />
       <option name="project" value="LOCAL" />
-      <updated>1708814197688</updated>
+      <updated>1708815898477</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="stuff is pushed">
+      <option name="closed" value="true" />
+      <created>1708816148786</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1708816148786</updated>
+    </task>
+    <task id="LOCAL-00005" summary="fixed my first bug!">
+      <option name="closed" value="true" />
+      <created>1708816275333</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1708816275333</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -151,9 +159,11 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="altered structure" />
-    <MESSAGE value="grid stuff" />
-    <MESSAGE value="graphics" />
-    <option name="LAST_COMMIT_MESSAGE" value="graphics" />
+    <MESSAGE value="some runner and direction stuff" />
+    <MESSAGE value="ton of stuff" />
+    <MESSAGE value="stuff is pushed" />
+    <MESSAGE value="fixed my first bug!" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed my first bug!" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
