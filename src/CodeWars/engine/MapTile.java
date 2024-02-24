@@ -18,4 +18,13 @@ public class MapTile
         this.robotInfoOnTile = robotInfoOnTile;
         this.mapLocation = mapLocation;
     }
+
+    public MapTile(MapTile other)
+    {
+        this.hasMetalDeposit = other.hasMetalDeposit;
+        this.hasSiliconDeposit = other.hasSiliconDeposit;
+        this.isPassable = other.isPassable;
+        this.robotInfoOnTile = new RobotInfo(other.robotInfoOnTile);
+        this.mapLocation = new Point(other.mapLocation);
+    }
 }

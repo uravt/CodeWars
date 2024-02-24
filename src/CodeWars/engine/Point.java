@@ -11,6 +11,12 @@ public class Point
         this.y = y;
     }
 
+    public Point(Point other)
+    {
+        this.x = other.x;
+        this.y = other.y;
+    }
+
     public Direction directionTo(Point other)
     {
         int dx = other.x - this.x;

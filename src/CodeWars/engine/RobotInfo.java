@@ -2,8 +2,8 @@ package CodeWars.engine;
 
 public class RobotInfo
 {
+    protected int robotType;
     protected GameWorld gameWorld;
-
     protected double health;
     protected int attack;
     protected int siliconCost;
@@ -20,6 +20,7 @@ public class RobotInfo
 
     protected RobotInfo(int robotType, int xCoordinate, int yCoordinate, boolean isBuilding, GameWorld gameWorld)
     {
+        this.robotType = robotType;
         this.health = GameConstants.HEALTH[robotType];
         this.attack = GameConstants.ATTACK[robotType];
         this.siliconCost = GameConstants.SILICON_COST[robotType];
@@ -32,5 +33,21 @@ public class RobotInfo
         this.visionRadius = GameConstants.VISION_RADIUS[robotType];
         this.isBuilding = isBuilding;
         this.gameWorld = gameWorld;
+    }
+
+    public RobotInfo(RobotInfo other)
+    {
+        this.robotType = other.robotType;
+        this.health = GameConstants.HEALTH[robotType];
+        this.attack = GameConstants.ATTACK[robotType];
+        this.siliconCost = GameConstants.SILICON_COST[robotType];
+        this.ironCost = GameConstants.IRON_COST[robotType];
+        this.xCoordinate = xCoordinate;
+        this.yCoordinate = yCoordinate;
+        this.cooldownMove = GameConstants.COOLDOWN_MOVE[robotType];
+        this.cooldownAttack = GameConstants.COOLDOWN_ATTACK[robotType];
+        this.cooldownMine = GameConstants.COOLDOWN_MINE[robotType];
+        this.visionRadius = GameConstants.VISION_RADIUS[robotType];
+        this.isBuilding = isBuilding;
     }
 }
