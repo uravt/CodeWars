@@ -1,0 +1,112 @@
+Index: src/CodeWars/Main.java
+===================================================================
+diff --git a/src/CodeWars/Main.java b/src/CodeWars/Main.java
+deleted file mode 100644
+--- a/src/CodeWars/Main.java	(revision 140f4b3cec4db8080baa81da2e109ffde84db2a5)
++++ /dev/null	(revision 140f4b3cec4db8080baa81da2e109ffde84db2a5)
+@@ -1,9 +0,0 @@
+-package CodeWars;
+-
+-public class Main
+-{
+-    public static void main(String[] args)
+-    {
+-
+-    }
+-}
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project version=\"4\">\n  <component name=\"AutoImportSettings\">\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\n  </component>\n  <component name=\"ChangeListManager\">\n    <list default=\"true\" id=\"3cd76a97-2922-4c9c-8a31-f31c0123d23e\" name=\"Changes\" comment=\"altered structure\">\n      <change afterPath=\"$PROJECT_DIR$/.idea/uiDesigner.xml\" afterDir=\"false\" />\n      <change afterPath=\"$PROJECT_DIR$/src/CodeWars/engine/Direction.java\" afterDir=\"false\" />\n      <change afterPath=\"$PROJECT_DIR$/src/CodeWars/engine/GameConstants.java\" afterDir=\"false\" />\n      <change afterPath=\"$PROJECT_DIR$/src/CodeWars/engine/GameWorld.java\" afterDir=\"false\" />\n      <change afterPath=\"$PROJECT_DIR$/src/CodeWars/engine/Main.java\" afterDir=\"false\" />\n      <change afterPath=\"$PROJECT_DIR$/src/CodeWars/engine/MapTile.java\" afterDir=\"false\" />\n      <change afterPath=\"$PROJECT_DIR$/src/CodeWars/engine/Point.java\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\n    </list>\n    <list id=\"2cfe8a18-1c19-4993-8531-d9849a380bd0\" name=\"Changes by Jack\" comment=\"\" />\n    <list id=\"2f3b03d6-b12e-4b83-86e1-87fa8f53cb92\" name=\"Changes by sethlifland\" comment=\"\">\n      <change beforePath=\"$PROJECT_DIR$/src/CodeWars/Main.java\" beforeDir=\"false\" />\n    </list>\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\n  </component>\n  <component name=\"FileTemplateManagerImpl\">\n    <option name=\"RECENT_TEMPLATES\">\n      <list>\n        <option value=\"Enum\" />\n        <option value=\"Class\" />\n      </list>\n    </option>\n  </component>\n  <component name=\"Git.Settings\">\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\n  </component>\n  <component name=\"ProblemsViewState\">\n    <option name=\"selectedTabId\" value=\"CurrentFile\" />\n  </component>\n  <component name=\"ProjectColorInfo\"><![CDATA[{\n  \"associatedIndex\": 3\n}]]></component>\n  <component name=\"ProjectId\" id=\"2cpFFRjTMWkDaRnGjOsfRcsmnrp\" />\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\" />\n  <component name=\"ProjectViewState\">\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\n    <option name=\"showLibraryContents\" value=\"true\" />\n  </component>\n  <component name=\"PropertiesComponent\"><![CDATA[{\n  \"keyToString\": {\n    \"RunOnceActivity.OpenProjectViewOnStart\": \"true\",\n    \"RunOnceActivity.ShowReadmeOnStart\": \"true\",\n    \"SHARE_PROJECT_CONFIGURATION_FILES\": \"true\",\n    \"WebServerToolWindowFactoryState\": \"false\",\n    \"git-widget-placeholder\": \"master\",\n    \"jdk.selected.JAVA_MODULE\": \"corretto-19\",\n    \"node.js.detected.package.eslint\": \"true\",\n    \"node.js.detected.package.tslint\": \"true\",\n    \"node.js.selected.package.eslint\": \"(autodetect)\",\n    \"node.js.selected.package.tslint\": \"(autodetect)\",\n    \"project.structure.last.edited\": \"Modules\",\n    \"project.structure.proportion\": \"0.0\",\n    \"project.structure.side.proportion\": \"0.0\",\n    \"vue.rearranger.settings.migration\": \"true\"\n  }\n}]]></component>\n  <component name=\"RunManager\">\n    <configuration name=\"Client\" type=\"Application\" factoryName=\"Application\" temporary=\"true\" nameIsGenerated=\"true\">\n      <option name=\"MAIN_CLASS_NAME\" value=\"CodeWars.engine.client.Client\" />\n      <module name=\"CodeWars\" />\n      <extension name=\"coverage\">\n        <pattern>\n          <option name=\"PATTERN\" value=\"CodeWars.engine.client.*\" />\n          <option name=\"ENABLED\" value=\"true\" />\n        </pattern>\n      </extension>\n      <method v=\"2\">\n        <option name=\"Make\" enabled=\"true\" />\n      </method>\n    </configuration>\n    <recent_temporary>\n      <list>\n        <item itemvalue=\"Application.Client\" />\n      </list>\n    </recent_temporary>\n  </component>\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\n  <component name=\"TaskManager\">\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\n      <changelist id=\"3cd76a97-2922-4c9c-8a31-f31c0123d23e\" name=\"Changes\" comment=\"\" />\n      <created>1708800508674</created>\n      <option name=\"number\" value=\"Default\" />\n      <option name=\"presentableId\" value=\"Default\" />\n      <updated>1708800508674</updated>\n      <workItem from=\"1708800509675\" duration=\"7102000\" />\n    </task>\n    <task id=\"LOCAL-00001\" summary=\"altered structure\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1708800976735</created>\n      <option name=\"number\" value=\"00001\" />\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1708800976735</updated>\n    </task>\n    <option name=\"localTasksCounter\" value=\"2\" />\n    <servers />\n  </component>\n  <component name=\"TypeScriptGeneratedFilesManager\">\n    <option name=\"version\" value=\"3\" />\n  </component>\n  <component name=\"VcsManagerConfiguration\">\n    <MESSAGE value=\"altered structure\" />\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"altered structure\" />\n  </component>\n  <component name=\"XDebuggerManager\">\n    <breakpoint-manager>\n      <breakpoints>\n        <breakpoint enabled=\"true\" type=\"java-exception\">\n          <properties class=\"java.lang.ArithmeticException\" package=\"java.lang\" />\n          <option name=\"timeStamp\" value=\"1\" />\n        </breakpoint>\n      </breakpoints>\n    </breakpoint-manager>\n  </component>\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision 140f4b3cec4db8080baa81da2e109ffde84db2a5)
++++ b/.idea/workspace.xml	(date 1708809629884)
+@@ -5,19 +5,11 @@
+   </component>
+   <component name="ChangeListManager">
+     <list default="true" id="3cd76a97-2922-4c9c-8a31-f31c0123d23e" name="Changes" comment="altered structure">
+-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/CodeWars/engine/Direction.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/CodeWars/engine/GameConstants.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/CodeWars/engine/GameWorld.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/CodeWars/engine/Main.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/CodeWars/engine/MapTile.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/CodeWars/engine/Point.java" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+-    </list>
+-    <list id="2cfe8a18-1c19-4993-8531-d9849a380bd0" name="Changes by Jack" comment="" />
+-    <list id="2f3b03d6-b12e-4b83-86e1-87fa8f53cb92" name="Changes by sethlifland" comment="">
+       <change beforePath="$PROJECT_DIR$/src/CodeWars/Main.java" beforeDir="false" />
+     </list>
++    <list id="2cfe8a18-1c19-4993-8531-d9849a380bd0" name="Changes by Jack" comment="" />
++    <list id="2f3b03d6-b12e-4b83-86e1-87fa8f53cb92" name="Changes by sethlifland" comment="" />
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+@@ -30,6 +22,9 @@
+         <option value="Class" />
+       </list>
+     </option>
++  </component>
++  <component name="Git.Merge.Settings">
++    <option name="BRANCH" value="origin/master" />
+   </component>
+   <component name="Git.Settings">
+     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+@@ -37,9 +32,9 @@
+   <component name="ProblemsViewState">
+     <option name="selectedTabId" value="CurrentFile" />
+   </component>
+-  <component name="ProjectColorInfo"><![CDATA[{
+-  "associatedIndex": 3
+-}]]></component>
++  <component name="ProjectColorInfo">{
++  &quot;associatedIndex&quot;: 3
++}</component>
+   <component name="ProjectId" id="2cpFFRjTMWkDaRnGjOsfRcsmnrp" />
+   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+   <component name="ProjectViewState">
+@@ -48,6 +43,8 @@
+   </component>
+   <component name="PropertiesComponent"><![CDATA[{
+   "keyToString": {
++    "Application.Client.executor": "Run",
++    "Application.Main.executor": "Run",
+     "RunOnceActivity.OpenProjectViewOnStart": "true",
+     "RunOnceActivity.ShowReadmeOnStart": "true",
+     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+@@ -64,7 +61,7 @@
+     "vue.rearranger.settings.migration": "true"
+   }
+ }]]></component>
+-  <component name="RunManager">
++  <component name="RunManager" selected="Application.Main">
+     <configuration name="Client" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+       <option name="MAIN_CLASS_NAME" value="CodeWars.engine.client.Client" />
+       <module name="CodeWars" />
+@@ -78,8 +75,22 @@
+         <option name="Make" enabled="true" />
+       </method>
+     </configuration>
++    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
++      <option name="MAIN_CLASS_NAME" value="CodeWars.engine.Main" />
++      <module name="CodeWars" />
++      <extension name="coverage">
++        <pattern>
++          <option name="PATTERN" value="CodeWars.engine.*" />
++          <option name="ENABLED" value="true" />
++        </pattern>
++      </extension>
++      <method v="2">
++        <option name="Make" enabled="true" />
++      </method>
++    </configuration>
+     <recent_temporary>
+       <list>
++        <item itemvalue="Application.Main" />
+         <item itemvalue="Application.Client" />
+       </list>
+     </recent_temporary>

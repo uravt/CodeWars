@@ -1,0 +1,393 @@
+Index: src/CodeWars/engine/Runner.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package CodeWars.engine;\nimport CodeWars.Player.*;\nimport CodeWars.engine.client.Client;\n\nimport java.awt.*;\nimport java.sql.Array;\nimport java.util.ArrayList;\n\npublic class Runner\n{\n    Client client = new Client();\n    //constants\n    static final protected int FINAL_TURN = 2000;\n\n    //current turn number\n    protected int turn;\n\n    GameWorld world;\n\n    \n    //list of all of the robots\n    ArrayList<RobotPlayer> robotPlayers;\n    //robots created during the turn\n    ArrayList<RobotPlayer> toAdd;\n    //robots who died during the turn\n    ArrayList<RobotPlayer> toRemove;\n\n    //instantiates a runner object\n    protected Runner(){\n        world = new GameWorld(30, 30);\n        robotPlayers = new ArrayList<>();\n        toAdd = new ArrayList<>();\n        toRemove = new ArrayList<>();\n        client = new Client();\n    }\n\n    //increments one turn\n    protected void update(){\n        for(RobotPlayer robotPlayer : robotPlayers){\n            if(robotPlayer.alive()){\n                RobotUser tempRobotUser = new RobotUser(robotPlayer.getRobot(), world);\n                robotPlayer.run(tempRobotUser);\n                if(tempRobotUser.spawned != null){\n                    switch(robotPlayer.getPlayerID()){\n                        case 1:\n                            toAdd.add(new RobotPlayer(tempRobotUser.spawned, new Player1(1)));\n                            break;\n                        case 2:\n                            toAdd.add(new RobotPlayer(tempRobotUser.spawned, new Player2(2)));\n                            break;\n                        default:\n                            System.out.println(\"Something is wrong\");\n                            break;\n                    }\n                    tempRobotUser.spawned = null;\n                }\n            }\n            else{\n                toRemove.add(robotPlayer);\n            }\n        }\n        //these should already be removed from the map\n        for(RobotPlayer robotPlayer : toRemove){\n            robotPlayers.remove(robotPlayer);\n        }\n        //these should already be added to the map\n        robotPlayers.addAll(toAdd);\n        turn++;\n    }\n\n    //returns whether the current game is active\n    protected boolean active(){\n        System.out.println(turn);\n        return turn < FINAL_TURN;\n    }\n}\n\n//pairs a robot and a player, so that each robot can have its own instance of player 1 or player 2\nclass RobotPlayer{\n    private RobotInfo robot;\n    private Player player;\n    public RobotPlayer(RobotInfo r, Player p){\n        robot = r;\n        player = p;\n    }\n    protected boolean alive(){\n        return robot.health > 0;\n    }\n    protected RobotInfo getRobot(){\n        return robot;\n    }\n    protected int getPlayerID(){\n        return player.getID();\n    }\n    protected void run(RobotUser r){\n        player.run(r);\n    }\n\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/CodeWars/engine/Runner.java b/src/CodeWars/engine/Runner.java
+--- a/src/CodeWars/engine/Runner.java	(revision 7de82bd0b0cb13cdfec25606c4b3a87a4edbb977)
++++ b/src/CodeWars/engine/Runner.java	(date 1708812843045)
+@@ -39,7 +39,13 @@
+         for(RobotPlayer robotPlayer : robotPlayers){
+             if(robotPlayer.alive()){
+                 RobotUser tempRobotUser = new RobotUser(robotPlayer.getRobot(), world);
+-                robotPlayer.run(tempRobotUser);
++                try {
++                    robotPlayer.run(tempRobotUser);
++                }
++                catch(Exception e){
++                    System.out.println("hi!");
++                    toRemove.add(robotPlayer);
++                }
+                 if(tempRobotUser.spawned != null){
+                     switch(robotPlayer.getPlayerID()){
+                         case 1:
+Index: src/CodeWars/engine/Point.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package CodeWars.engine;\n\npublic class Point\n{\n    public int x;\n    public int y;\n\n    public Point(int x, int y)\n    {\n        this.x = x;\n        this.y = y;\n    }\n\n    public Point(Point other)\n    {\n        this.x = other.x;\n        this.y = other.y;\n    }\n\n    public Direction directionTo(Point other)\n    {\n        int dx = other.x - this.x;\n        int dy = other.y - this.y;\n\n        if(dx == 0 && dy > 0)\n        {\n            return Direction.NORTH;\n        }\n        else if (dx > 0 && dy > 0)\n        {\n            return Direction.NORTHEAST;\n        }\n        else if (dx > 0 && dy == 0)\n        {\n            return Direction.EAST;\n        }\n        else if (dx > 0 && dy < 0)\n        {\n            return Direction.SOUTHEAST;\n        }\n        else if (dx == 0 && dy < 0)\n        {\n            return Direction.SOUTH;\n        }\n        else if (dx < 0 && dy < 0)\n        {\n            return Direction.SOUTHWEST;\n        }\n        else if (dx < 0 && dy == 0)\n        {\n            return Direction.WEST;\n        }\n        else if (dx < 0 && dy > 0)\n        {\n            return Direction.NORTHWEST;\n        }\n        return Direction.NONE;\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/CodeWars/engine/Point.java b/src/CodeWars/engine/Point.java
+--- a/src/CodeWars/engine/Point.java	(revision 7de82bd0b0cb13cdfec25606c4b3a87a4edbb977)
++++ b/src/CodeWars/engine/Point.java	(date 1708814649040)
+@@ -56,4 +56,36 @@
+         }
+         return Direction.NONE;
+     }
++
++    //returns the point one square in the direction from point origin
++    public Point pointInDirection(Direction direction){
++        return switch (direction) {
++            case NORTH -> new Point(x, y + 1);
++            case NORTHEAST -> new Point(x + 1, y + 1);
++            case EAST -> new Point(x + 1, y);
++            case SOUTHEAST -> new Point(x + 1, y - 1);
++            case SOUTH -> new Point(x, y - 1);
++            case SOUTHWEST -> new Point(x - 1, y - 1);
++            case WEST -> new Point(x - 1, y);
++            case NORTHWEST -> new Point(x - 1, y + 1);
++            default -> this;
++        };
++    }
++    public MapTile pointAsMapTile(GameWorld gw){
++        return gw.gameWorld[x][gw.sizeY - y - 1];
++    }
++
++    public int distanceSquaredTo(Point p) {
++        return (int)Math.pow(Math.sqrt((x - p.x) * (x - p.x) + (y - p.y) * (y - p.y)), 2);
++    }
++
++    public boolean isAdjacent(Point p){
++        if(x == p.x){
++            return Math.abs(p.y-y) <= 1;
++        }
++        if (y == p.y){
++            return Math.abs(p.x-x) <= 1;
++        }
++        return Math.abs(p.x-x) + Math.abs(p.y-y) <= 2;
++    }
+ }
+Index: src/CodeWars/engine/MapTile.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package CodeWars.engine;\n\npublic class MapTile\n{\n    boolean hasMetalDeposit;\n    boolean hasSiliconDeposit;\n    boolean isPassable;\n    //This value is null if no Robot is present on the tile\n    RobotInfo robotInfoOnTile;\n    //location of the tile\n    Point mapLocation;\n\n    public MapTile(boolean hasMetalDeposit, boolean hasSiliconDeposit, boolean isPassable, RobotInfo robotInfoOnTile, Point mapLocation)\n    {\n        this.hasMetalDeposit = hasMetalDeposit;\n        this.hasSiliconDeposit = hasSiliconDeposit;\n        this.isPassable = isPassable;\n        this.robotInfoOnTile = robotInfoOnTile;\n        this.mapLocation = mapLocation;\n    }\n\n    public MapTile(MapTile other)\n    {\n        this.hasMetalDeposit = other.hasMetalDeposit;\n        this.hasSiliconDeposit = other.hasSiliconDeposit;\n        this.isPassable = other.isPassable;\n        this.robotInfoOnTile = new RobotInfo(other.robotInfoOnTile);\n        this.mapLocation = new Point(other.mapLocation);\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/CodeWars/engine/MapTile.java b/src/CodeWars/engine/MapTile.java
+--- a/src/CodeWars/engine/MapTile.java	(revision 7de82bd0b0cb13cdfec25606c4b3a87a4edbb977)
++++ b/src/CodeWars/engine/MapTile.java	(date 1708812843054)
+@@ -2,29 +2,37 @@
+ 
+ public class MapTile
+ {
+-    boolean hasMetalDeposit;
+-    boolean hasSiliconDeposit;
+-    boolean isPassable;
++    int numMetal;
++    int numSilicon;
++    boolean passable;
+     //This value is null if no Robot is present on the tile
+     RobotInfo robotInfoOnTile;
+     //location of the tile
+-    Point mapLocation;
++    Point point;
+ 
+-    public MapTile(boolean hasMetalDeposit, boolean hasSiliconDeposit, boolean isPassable, RobotInfo robotInfoOnTile, Point mapLocation)
++    public MapTile(int numMetal, int numSilicon, boolean passable, RobotInfo robotInfoOnTile, Point mapLocation)
+     {
+-        this.hasMetalDeposit = hasMetalDeposit;
+-        this.hasSiliconDeposit = hasSiliconDeposit;
+-        this.isPassable = isPassable;
++        this.numMetal = numMetal;
++        this.numSilicon = numSilicon;
++        this.passable = passable;
+         this.robotInfoOnTile = robotInfoOnTile;
+-        this.mapLocation = mapLocation;
++        this.point = mapLocation;
+     }
+ 
+     public MapTile(MapTile other)
+     {
+-        this.hasMetalDeposit = other.hasMetalDeposit;
+-        this.hasSiliconDeposit = other.hasSiliconDeposit;
+-        this.isPassable = other.isPassable;
++        this.numMetal = other.numMetal;
++        this.numSilicon = other.numSilicon;
++        this.passable = other.passable;
+         this.robotInfoOnTile = new RobotInfo(other.robotInfoOnTile);
+-        this.mapLocation = new Point(other.mapLocation);
++        this.point = new Point(other.point);
++    }
++
++    public MapTile(int x, int y){
++        this.numMetal = 0;
++        this.numSilicon = 0;
++        this.passable = true;
++        this.robotInfoOnTile = null;
++        this.point = new Point(x, y);
+     }
+ }
+Index: src/CodeWars/engine/RobotInfo.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package CodeWars.engine;\n\npublic class RobotInfo\n{\n    protected int robotType;\n    protected GameWorld gameWorld;\n    protected double health;\n    protected int attack;\n    protected int siliconCost;\n    protected int ironCost;\n    protected Point position;\n    protected int cooldownMove;\n    protected int cooldownAttack;\n    protected int cooldownMine;\n    protected int visionRadius;\n    protected int playerOwner;\n    protected boolean isBuilding;\n\n\n    protected RobotInfo(int robotType, Point position, boolean isBuilding, GameWorld gameWorld)\n    {\n        this.robotType = robotType;\n        this.health = GameConstants.HEALTH[robotType];\n        this.attack = GameConstants.ATTACK[robotType];\n        this.siliconCost = GameConstants.SILICON_COST[robotType];\n        this.ironCost = GameConstants.IRON_COST[robotType];\n        this.position = position;\n        this.cooldownMove = GameConstants.COOLDOWN_MOVE[robotType];\n        this.cooldownAttack = GameConstants.COOLDOWN_ATTACK[robotType];\n        this.cooldownMine = GameConstants.COOLDOWN_MINE[robotType];\n        this.visionRadius = GameConstants.VISION_RADIUS[robotType];\n        this.isBuilding = isBuilding;\n        this.gameWorld = gameWorld;\n    }\n\n    public RobotInfo(RobotInfo other)\n    {\n        this.robotType = other.robotType;\n        this.health = GameConstants.HEALTH[robotType];\n        this.attack = GameConstants.ATTACK[robotType];\n        this.siliconCost = GameConstants.SILICON_COST[robotType];\n        this.ironCost = GameConstants.IRON_COST[robotType];\n        this.position = new Point(other.position);\n        this.cooldownMove = GameConstants.COOLDOWN_MOVE[robotType];\n        this.cooldownAttack = GameConstants.COOLDOWN_ATTACK[robotType];\n        this.cooldownMine = GameConstants.COOLDOWN_MINE[robotType];\n        this.visionRadius = GameConstants.VISION_RADIUS[robotType];\n        this.isBuilding = isBuilding;\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/CodeWars/engine/RobotInfo.java b/src/CodeWars/engine/RobotInfo.java
+--- a/src/CodeWars/engine/RobotInfo.java	(revision 7de82bd0b0cb13cdfec25606c4b3a87a4edbb977)
++++ b/src/CodeWars/engine/RobotInfo.java	(date 1708812843051)
+@@ -4,14 +4,13 @@
+ {
+     protected int robotType;
+     protected GameWorld gameWorld;
+-    protected double health;
++    protected int health;
+     protected int attack;
+     protected int siliconCost;
+     protected int ironCost;
+     protected Point position;
+     protected int cooldownMove;
+-    protected int cooldownAttack;
+-    protected int cooldownMine;
++    protected int cooldownAction;
+     protected int visionRadius;
+     protected int playerOwner;
+     protected boolean isBuilding;
+@@ -26,8 +25,6 @@
+         this.ironCost = GameConstants.IRON_COST[robotType];
+         this.position = position;
+         this.cooldownMove = GameConstants.COOLDOWN_MOVE[robotType];
+-        this.cooldownAttack = GameConstants.COOLDOWN_ATTACK[robotType];
+-        this.cooldownMine = GameConstants.COOLDOWN_MINE[robotType];
+         this.visionRadius = GameConstants.VISION_RADIUS[robotType];
+         this.isBuilding = isBuilding;
+         this.gameWorld = gameWorld;
+@@ -36,14 +33,13 @@
+     public RobotInfo(RobotInfo other)
+     {
+         this.robotType = other.robotType;
+-        this.health = GameConstants.HEALTH[robotType];
+-        this.attack = GameConstants.ATTACK[robotType];
++        this.health = other.health;
++        this.attack = other.attack;
+         this.siliconCost = GameConstants.SILICON_COST[robotType];
+         this.ironCost = GameConstants.IRON_COST[robotType];
+         this.position = new Point(other.position);
+-        this.cooldownMove = GameConstants.COOLDOWN_MOVE[robotType];
+-        this.cooldownAttack = GameConstants.COOLDOWN_ATTACK[robotType];
+-        this.cooldownMine = GameConstants.COOLDOWN_MINE[robotType];
++        this.cooldownMove = other.cooldownMove;
++        this.cooldownAction = other.cooldownAction;
+         this.visionRadius = GameConstants.VISION_RADIUS[robotType];
+         this.isBuilding = isBuilding;
+     }
+Index: src/CodeWars/engine/RobotUser.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package CodeWars.engine;\n\npublic class RobotUser\n{\n    private RobotInfo robotInfo;\n    protected RobotInfo spawned;\n    GameWorld world;\n\n    protected RobotUser(RobotInfo assignedRobotInfo, GameWorld gw){\n        robotInfo = assignedRobotInfo;\n        spawned = null;\n        world = gw;\n    }\n\n    //returns if a robot can move\n    public boolean canMove(Direction dir){return false;}\n    //tries to move, returns true if successful, returns false if fails (should throw an error, you need to check!)\n    public boolean move(Direction dir) {return false;}\n    //returns if the robot can attack a point\n    public boolean canAttack(Point p) {return false;}\n    //tries to attack, returns whether successful\n    public boolean attack(Point p) {return false;}\n    //returns whether you can mine a point\n    public boolean canMine(Point p) {return false;}\n    //tries to mine a point, returns whether successful\n    public boolean mine(Point p) {return false;}\n    //returns whether you can spawn a given robot type\n    public boolean canSpawn(int robotIndex, Point p) {return false;}\n    //tries to spawn a robot, returns whether successful\n    public boolean spawn(int robotIndex, Point p) {return false;}\n\n    private boolean onMap(Point p){\n        return p.x >= 0 && p.x < world.sizeX && p.y >= 0 && p.y < world.sizeY;\n    }\n\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/CodeWars/engine/RobotUser.java b/src/CodeWars/engine/RobotUser.java
+--- a/src/CodeWars/engine/RobotUser.java	(revision 7de82bd0b0cb13cdfec25606c4b3a87a4edbb977)
++++ b/src/CodeWars/engine/RobotUser.java	(date 1708814880659)
+@@ -5,29 +5,98 @@
+     private RobotInfo robotInfo;
+     protected RobotInfo spawned;
+     GameWorld world;
++    public int health;
++    public int moveCooldown;
++    public int actionCooldown;
++    public int robotType;
++    public Point position;
+ 
+     protected RobotUser(RobotInfo assignedRobotInfo, GameWorld gw){
+         robotInfo = assignedRobotInfo;
+         spawned = null;
+         world = gw;
++        health = robotInfo.health;
++        moveCooldown = robotInfo.cooldownMove;
++        actionCooldown = robotInfo.cooldownAction;
++        robotType = robotInfo.robotType;
++        position = robotInfo.position;
+     }
+ 
+     //returns if a robot can move
+-    public boolean canMove(Direction dir){return false;}
++    public boolean canMove(Direction dir){
++        if(robotType == GameConstants.HQ) return false;
++        Point destination = position.pointInDirection(dir);
++        if(destination == null || !onMap(destination)) return false;
++        MapTile destinationTile = destination.pointAsMapTile(world);
++        if(destinationTile == null || destinationTile.robotInfoOnTile != null || !destinationTile.passable) return false;
++        return moveCooldown < 10;
++    }
+     //tries to move, returns true if successful, returns false if fails (should throw an error, you need to check!)
+-    public boolean move(Direction dir) {return false;}
++    public boolean move(Direction dir) {
++        if(robotType == GameConstants.HQ) return false;
++        Point destination = position.pointInDirection(dir);
++        if(destination == null || !onMap(destination)) return false;
++        MapTile destinationTile = destination.pointAsMapTile(world);
++        if(destinationTile == null || destinationTile.robotInfoOnTile != null || !destinationTile.passable) return false;
++        if(moveCooldown < 10) return false;
++        robotInfo.cooldownMove += GameConstants.COOLDOWN_MOVE[robotType];
++        moveCooldown = robotInfo.cooldownMove;
++        MapTile curTile = position.pointAsMapTile(world);
++        curTile.robotInfoOnTile = null;
++        destinationTile.robotInfoOnTile = robotInfo;
++        robotInfo.position = destination;
++        position = robotInfo.position;
++        return true;
++    }
+     //returns if the robot can attack a point
+-    public boolean canAttack(Point p) {return false;}
++    public boolean canAttack(Point p) {
++        if(robotType == GameConstants.HQ) return false;
++        if(p == null || !onMap(p)) return false;
++        if(position.distanceSquaredTo(p) > GameConstants.VISION_RADIUS[robotType]) return false;
++        MapTile destinationTile = p.pointAsMapTile(world);
++        if(destinationTile == null || destinationTile.robotInfoOnTile == null || destinationTile.robotInfoOnTile.playerOwner == robotInfo.playerOwner || robotInfo.cooldownAction > 10) return false;
++        return true;
++    }
+     //tries to attack, returns whether successful
+-    public boolean attack(Point p) {return false;}
++    public boolean attack(Point p) {
++        if(robotType == GameConstants.HQ) return false;
++        if(p == null || !onMap(p)) return false;
++        if(position.distanceSquaredTo(p) > GameConstants.VISION_RADIUS[robotType]) return false;
++        MapTile destinationTile = p.pointAsMapTile(world);
++        if(destinationTile == null || destinationTile.robotInfoOnTile == null || destinationTile.robotInfoOnTile.playerOwner == robotInfo.playerOwner) return false;
++        robotInfo.cooldownAction += GameConstants.COOLDOWN_ATTACK[robotType];
++        actionCooldown = robotInfo.cooldownAction;
++        destinationTile.robotInfoOnTile.health -= GameConstants.ATTACK[robotType];
++        if(destinationTile.robotInfoOnTile.health <= 0){
++            destinationTile.robotInfoOnTile = null;
++        }
++        return true;
++    }
+     //returns whether you can mine a point
+-    public boolean canMine(Point p) {return false;}
++    public boolean canMine(Point p) {
++        if(robotType == GameConstants.HQ) return false;
++        if(p == null || !onMap(p)) return false;
++        if(!p.isAdjacent(position)) return false;
++        MapTile destinationTile = p.pointAsMapTile(world);
++        if(destinationTile == null || destinationTile.robotInfoOnTile != null || (destinationTile.numMetal == 0 && destinationTile.numSilicon == 0)) return false;
++        if(actionCooldown <= 10) return false;
++        return false;
++    }
+     //tries to mine a point, returns whether successful
+-    public boolean mine(Point p) {return false;}
++    public boolean mine(Point p) {
++        if(robotType == GameConstants.HQ) return false;
++        return false;
++    }
+     //returns whether you can spawn a given robot type
+-    public boolean canSpawn(int robotIndex, Point p) {return false;}
++    public boolean canSpawn(int robotIndex, Point p) {
++        if(robotType != GameConstants.HQ) return false;
++        return false;
++    }
+     //tries to spawn a robot, returns whether successful
+-    public boolean spawn(int robotIndex, Point p) {return false;}
++    public boolean spawn(int robotIndex, Point p) {
++        if(robotType != GameConstants.HQ) return false;
++        return false;
++    }
+ 
+     private boolean onMap(Point p){
+         return p.x >= 0 && p.x < world.sizeX && p.y >= 0 && p.y < world.sizeY;
+Index: src/CodeWars/engine/GameConstants.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package CodeWars.engine;\npublic class GameConstants\n{\n    static final int[] ATTACK = {3, 5, 1, 7, 0};\n    static final int[] IRON_COST = {10, 20, 20, 20, Integer.MAX_VALUE};\n    static final int[] SILICON_COST = {0, 5, 0, 10, Integer.MAX_VALUE};\n    static final int[] HEALTH = {80, 100, 80, 120, 500};\n    static final int[] COOLDOWN_MOVE = {10, 20, 20, 25, 0};\n    static final int[] COOLDOWN_ATTACK = {20, 15, 25, 15, 0};\n    static final int[] COOLDOWN_MINE = {20, 20, 5, 20, 0};\n    static final int[] VISION_RADIUS = {20, 20, 20, 20, 20};\n\n\n\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/CodeWars/engine/GameConstants.java b/src/CodeWars/engine/GameConstants.java
+--- a/src/CodeWars/engine/GameConstants.java	(revision 7de82bd0b0cb13cdfec25606c4b3a87a4edbb977)
++++ b/src/CodeWars/engine/GameConstants.java	(date 1708814401033)
+@@ -1,6 +1,11 @@
+ package CodeWars.engine;
+ public class GameConstants
+ {
++    static final int SCOUT = 0;
++    static final int INFANTRY = 1;
++    static final int MINER = 2;
++    static final int SUPERBOT = 3;
++    static final int HQ = 4;
+     static final int[] ATTACK = {3, 5, 1, 7, 0};
+     static final int[] IRON_COST = {10, 20, 20, 20, Integer.MAX_VALUE};
+     static final int[] SILICON_COST = {0, 5, 0, 10, Integer.MAX_VALUE};
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project version=\"4\">\n  <component name=\"AutoImportSettings\">\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\n  </component>\n  <component name=\"ChangeListManager\">\n    <list default=\"true\" id=\"3cd76a97-2922-4c9c-8a31-f31c0123d23e\" name=\"Changes\" comment=\"grid stuff\">\n      <change afterPath=\"$PROJECT_DIR$/src/CodeWars/engine/Team.java\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/src/CodeWars/engine/GameWorld.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/CodeWars/engine/GameWorld.java\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/src/CodeWars/engine/Main.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/CodeWars/engine/Main.java\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/src/CodeWars/engine/RobotInfo.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/CodeWars/engine/RobotInfo.java\" afterDir=\"false\" />\n    </list>\n    <list id=\"2cfe8a18-1c19-4993-8531-d9849a380bd0\" name=\"Changes by Jack\" comment=\"\" />\n    <list id=\"2f3b03d6-b12e-4b83-86e1-87fa8f53cb92\" name=\"Changes by sethlifland\" comment=\"\" />\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\n  </component>\n  <component name=\"FileTemplateManagerImpl\">\n    <option name=\"RECENT_TEMPLATES\">\n      <list>\n        <option value=\"Enum\" />\n        <option value=\"Class\" />\n      </list>\n    </option>\n  </component>\n  <component name=\"Git.Settings\">\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\n  </component>\n  <component name=\"GitHubPullRequestSearchHistory\">{\n  &quot;lastFilter&quot;: {\n    &quot;state&quot;: &quot;OPEN&quot;,\n    &quot;assignee&quot;: &quot;slifland&quot;\n  }\n}</component>\n  <component name=\"GithubPullRequestsUISettings\">{\n  &quot;selectedUrlAndAccountId&quot;: {\n    &quot;url&quot;: &quot;https://github.com/MorbidMight/CodeWars.git&quot;,\n    &quot;accountId&quot;: &quot;edc0f460-46fd-48e9-8ec2-745f25a03a26&quot;\n  }\n}</component>\n  <component name=\"ProblemsViewState\">\n    <option name=\"selectedTabId\" value=\"CurrentFile\" />\n  </component>\n  <component name=\"ProjectColorInfo\">{\n  &quot;associatedIndex&quot;: 3\n}</component>\n  <component name=\"ProjectId\" id=\"2cpFFRjTMWkDaRnGjOsfRcsmnrp\" />\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\" />\n  <component name=\"ProjectViewState\">\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\n    <option name=\"showLibraryContents\" value=\"true\" />\n  </component>\n  <component name=\"PropertiesComponent\">{\n  &quot;keyToString&quot;: {\n    &quot;Application.Main.executor&quot;: &quot;Run&quot;,\n    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,\n    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,\n    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,\n    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,\n    &quot;git-widget-placeholder&quot;: &quot;master&quot;,\n    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;corretto-19&quot;,\n    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,\n    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,\n    &quot;node.js.detected.package.stylelint&quot;: &quot;true&quot;,\n    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,\n    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,\n    &quot;node.js.selected.package.stylelint&quot;: &quot;&quot;,\n    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,\n    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,\n    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,\n    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,\n    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,\n    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;\n  }\n}</component>\n  <component name=\"RunManager\">\n    <configuration name=\"Client\" type=\"Application\" factoryName=\"Application\" temporary=\"true\" nameIsGenerated=\"true\">\n      <option name=\"MAIN_CLASS_NAME\" value=\"CodeWars.engine.client.Client\" />\n      <module name=\"CodeWars\" />\n      <extension name=\"coverage\">\n        <pattern>\n          <option name=\"PATTERN\" value=\"CodeWars.engine.client.*\" />\n          <option name=\"ENABLED\" value=\"true\" />\n        </pattern>\n      </extension>\n      <method v=\"2\">\n        <option name=\"Make\" enabled=\"true\" />\n      </method>\n    </configuration>\n    <recent_temporary>\n      <list>\n        <item itemvalue=\"Application.Client\" />\n      </list>\n    </recent_temporary>\n  </component>\n  <component name=\"SharedIndexes\">\n    <attachedChunks>\n      <set>\n        <option value=\"bundled-js-predefined-1d06a55b98c1-db596990d856-JavaScript-IU-241.13688.18\" />\n        <option value=\"jdk-19.0.2-corretto-19.0.2-ec33d87e4238-3eb1ef11\" />\n      </set>\n    </attachedChunks>\n  </component>\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\n  <component name=\"TaskManager\">\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\n      <changelist id=\"3cd76a97-2922-4c9c-8a31-f31c0123d23e\" name=\"Changes\" comment=\"\" />\n      <created>1708800508674</created>\n      <option name=\"number\" value=\"Default\" />\n      <option name=\"presentableId\" value=\"Default\" />\n      <updated>1708800508674</updated>\n      <workItem from=\"1708800509675\" duration=\"7102000\" />\n      <workItem from=\"1708810061732\" duration=\"607000\" />\n    </task>\n    <task id=\"LOCAL-00001\" summary=\"altered structure\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1708800976735</created>\n      <option name=\"number\" value=\"00001\" />\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1708800976735</updated>\n    </task>\n    <task id=\"LOCAL-00002\" summary=\"grid stuff\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1708811282572</created>\n      <option name=\"number\" value=\"00002\" />\n      <option name=\"presentableId\" value=\"LOCAL-00002\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1708811282572</updated>\n    </task>\n    <option name=\"localTasksCounter\" value=\"3\" />\n    <servers />\n  </component>\n  <component name=\"TypeScriptGeneratedFilesManager\">\n    <option name=\"version\" value=\"3\" />\n  </component>\n  <component name=\"VcsManagerConfiguration\">\n    <MESSAGE value=\"altered structure\" />\n    <MESSAGE value=\"grid stuff\" />\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"grid stuff\" />\n  </component>\n  <component name=\"XDebuggerManager\">\n    <breakpoint-manager>\n      <breakpoints>\n        <breakpoint enabled=\"true\" type=\"java-exception\">\n          <properties class=\"java.lang.ArithmeticException\" package=\"java.lang\" />\n          <option name=\"timeStamp\" value=\"1\" />\n        </breakpoint>\n      </breakpoints>\n    </breakpoint-manager>\n  </component>\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision 7de82bd0b0cb13cdfec25606c4b3a87a4edbb977)
++++ b/.idea/workspace.xml	(date 1708814281998)
+@@ -4,11 +4,14 @@
+     <option name="autoReloadType" value="SELECTIVE" />
+   </component>
+   <component name="ChangeListManager">
+-    <list default="true" id="3cd76a97-2922-4c9c-8a31-f31c0123d23e" name="Changes" comment="grid stuff">
+-      <change afterPath="$PROJECT_DIR$/src/CodeWars/engine/Team.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/CodeWars/engine/GameWorld.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/CodeWars/engine/GameWorld.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/CodeWars/engine/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/CodeWars/engine/Main.java" afterDir="false" />
++    <list default="true" id="3cd76a97-2922-4c9c-8a31-f31c0123d23e" name="Changes" comment="some runner and direction stuff">
++      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/CodeWars/engine/GameConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/CodeWars/engine/GameConstants.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/CodeWars/engine/MapTile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/CodeWars/engine/MapTile.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/CodeWars/engine/Point.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/CodeWars/engine/Point.java" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/src/CodeWars/engine/RobotInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/CodeWars/engine/RobotInfo.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/CodeWars/engine/RobotUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/CodeWars/engine/RobotUser.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/CodeWars/engine/Runner.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/CodeWars/engine/Runner.java" afterDir="false" />
+     </list>
+     <list id="2cfe8a18-1c19-4993-8531-d9849a380bd0" name="Changes by Jack" comment="" />
+     <list id="2f3b03d6-b12e-4b83-86e1-87fa8f53cb92" name="Changes by sethlifland" comment="" />
+@@ -112,7 +115,7 @@
+       <option name="presentableId" value="Default" />
+       <updated>1708800508674</updated>
+       <workItem from="1708800509675" duration="7102000" />
+-      <workItem from="1708810061732" duration="607000" />
++      <workItem from="1708810061732" duration="1460000" />
+     </task>
+     <task id="LOCAL-00001" summary="altered structure">
+       <option name="closed" value="true" />
+@@ -122,13 +125,13 @@
+       <option name="project" value="LOCAL" />
+       <updated>1708800976735</updated>
+     </task>
+-    <task id="LOCAL-00002" summary="grid stuff">
++    <task id="LOCAL-00002" summary="some runner and direction stuff">
+       <option name="closed" value="true" />
+-      <created>1708811282572</created>
++      <created>1708810882203</created>
+       <option name="number" value="00002" />
+       <option name="presentableId" value="LOCAL-00002" />
+       <option name="project" value="LOCAL" />
+-      <updated>1708811282572</updated>
++      <updated>1708810882203</updated>
+     </task>
+     <option name="localTasksCounter" value="3" />
+     <servers />
+@@ -138,8 +141,8 @@
+   </component>
+   <component name="VcsManagerConfiguration">
+     <MESSAGE value="altered structure" />
+-    <MESSAGE value="grid stuff" />
+-    <option name="LAST_COMMIT_MESSAGE" value="grid stuff" />
++    <MESSAGE value="some runner and direction stuff" />
++    <option name="LAST_COMMIT_MESSAGE" value="some runner and direction stuff" />
+   </component>
+   <component name="XDebuggerManager">
+     <breakpoint-manager>
