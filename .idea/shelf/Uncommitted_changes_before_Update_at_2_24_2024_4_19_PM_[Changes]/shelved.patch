@@ -1,0 +1,986 @@
+Index: src/CodeWars/engine/client/Client.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package CodeWars.engine.client;\r\n\r\npublic class Client\r\n{\r\n    TileMap map = new TileMap();\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/CodeWars/engine/client/Client.java b/src/CodeWars/engine/client/Client.java
+--- a/src/CodeWars/engine/client/Client.java	(revision d6d25f4383ff4e7e10736bb2898c17547104ae39)
++++ b/src/CodeWars/engine/client/Client.java	(date 1708809475526)
+@@ -1,6 +1,16 @@
+ package CodeWars.engine.client;
++import javax.swing.*;
+ 
+ public class Client
+ {
+     TileMap map = new TileMap();
++    JFrame frame = new JFrame();
++
++    public Client()
++    {
++        frame = new JFrame();
++        frame.setSize(500, 600);
++        frame.setVisible(true);
++    }
++
+ }
+Index: src/CodeWars/Main.java
+===================================================================
+diff --git a/src/CodeWars/Main.java b/src/CodeWars/Main.java
+deleted file mode 100644
+--- a/src/CodeWars/Main.java	(revision d6d25f4383ff4e7e10736bb2898c17547104ae39)
++++ /dev/null	(revision d6d25f4383ff4e7e10736bb2898c17547104ae39)
+@@ -1,9 +0,0 @@
+-package CodeWars;
+-
+-public class Main
+-{
+-    public static void main(String[] args)
+-    {
+-
+-    }
+-}
+Index: src/CodeWars/engine/client/Map.java
+===================================================================
+diff --git a/src/CodeWars/engine/client/Map.java b/src/CodeWars/engine/client/Map.java
+deleted file mode 100644
+--- a/src/CodeWars/engine/client/Map.java	(revision d6d25f4383ff4e7e10736bb2898c17547104ae39)
++++ /dev/null	(revision d6d25f4383ff4e7e10736bb2898c17547104ae39)
+@@ -1,297 +0,0 @@
+-package CodeWars.engine.client;
+-import javax.swing.*;
+-import java.awt.*;
+-import java.io.File;
+-import java.io.IOException;
+-import java.util.List;
+-import java.util.Random;
+-
+-public class Map
+-{
+-    public static final int DEFAULT_MAP_SIZE = 25;
+-    public static final int DEFAULT_MAP_SEED = 0;
+-    public static final float DEFAULT_DIFFICULTY = 0.4f;
+-    private Random rng;
+-    private int size;
+-    private Tile[][] world;
+-    private int seed;
+-    private JFrame frame;
+-    public JPanel containerPanel;
+-    public UI ui;
+-
+-    public Map(UI ui)
+-    {
+-        this.frame = ui.frame;
+-        this.size = ui.size;
+-        this.seed = ui.seed;
+-        this.ui = ui;
+-        rng = new Random(seed);
+-        world = new Tile[size][size];
+-        ui.setMap(this);
+-
+-        containerPanel = new JPanel();
+-        containerPanel.setLayout(null);
+-        containerPanel.setSize(frame.getWidth(),frame.getHeight());
+-
+-        Dimension dimensions = frame.getSize();
+-        double startX = dimensions.getWidth() / 2f - dimensions.getHeight() / 2.23f;
+-        double endX = dimensions.getWidth() / 2f + dimensions.getHeight() / 2.23f;
+-        int currX = (int) startX;
+-        int currY = 0;
+-        int xIncrement = (int) (endX - startX) / size;
+-        int yIncrement = (int) (endX - startX) / size;
+-        for(int i = 0; i < world.length; i++)
+-        {
+-            for(int j = 0; j < world[i].length; j++)
+-            {
+-                if(rng.nextFloat() > 1 - DEFAULT_DIFFICULTY)
+-                {
+-                    world[i][j] = new Tile(xIncrement, currX,currY, j, world.length - i - 1, false, ui);
+-                }
+-                else
+-                {
+-                    world[i][j] = new Tile(xIncrement, currX,currY, j, world.length - i - 1, true, ui);
+-                }
+-                containerPanel.add(world[i][j].tile);
+-                containerPanel.repaint();
+-                currX += xIncrement;
+-            }
+-            currX = (int) startX;
+-            currY += yIncrement;
+-        }
+-
+-        frame.add(containerPanel);
+-        frame.repaint();
+-    }
+-
+-    public void loadFile(File loadFile) throws IOException
+-    {
+-        String[] fileLines = Utilities.readFile(loadFile);
+-        size = fileLines.length;
+-        ui.size = size;
+-        ui.sizeText.setText("" + size);
+-        int[][] newWorld = new int[size][size];
+-        for(int i = 0; i < fileLines.length; i++)
+-        {
+-            String[] split = fileLines[i].split(" ");
+-            for(int j = 0; j < split.length; j++)
+-            {
+-                newWorld[i][j] = Integer.parseInt(split[j]);
+-            }
+-        }
+-
+-        frame.remove(containerPanel);
+-        containerPanel = new JPanel();
+-        containerPanel.setLayout(null);
+-        containerPanel.setSize(frame.getWidth(),frame.getHeight());
+-
+-        world = new Tile[size][size];
+-
+-        Dimension dimensions = frame.getSize();
+-        double startX = dimensions.getWidth() / 2f - dimensions.getHeight() / 2.23f;
+-        double endX = dimensions.getWidth() / 2f + dimensions.getHeight() / 2.23f;
+-        int currX = (int) startX;
+-        int currY = 0;
+-        int xIncrement = (int) (endX - startX) / size;
+-        int yIncrement = (int) (endX - startX) / size;
+-        for(int i = 0; i < newWorld.length; i++)
+-        {
+-            for(int j = 0; j < newWorld[i].length; j++)
+-            {
+-                world[i][j] = new Tile(xIncrement, currX,currY, j, world.length - i - 1,
+-                        newWorld[i][j] == 1, ui);
+-                containerPanel.add(world[i][j].tile);
+-
+-                currX += xIncrement;
+-            }
+-            currX = (int) startX;
+-            currY += yIncrement;
+-        }
+-        frame.add(containerPanel);
+-        frame.repaint();
+-    }
+-
+-    public void loadFile(String filePath) throws IOException
+-    {
+-        String[] fileLines = Utilities.readFile(filePath);
+-        size = fileLines.length;
+-        int[][] newWorld = new int[size][size];
+-        for(int i = 0; i < fileLines.length; i++)
+-        {
+-            String[] split = fileLines[i].split(" ");
+-            for(int j = 0; j < split.length; j++)
+-            {
+-                newWorld[i][j] = Integer.parseInt(split[j]);
+-            }
+-        }
+-
+-        frame.remove(containerPanel);
+-        containerPanel = new JPanel();
+-        containerPanel.setLayout(null);
+-        containerPanel.setSize(frame.getWidth(),frame.getHeight());
+-
+-        world = new Tile[size][size];
+-
+-        Dimension dimensions = frame.getSize();
+-        double startX = dimensions.getWidth() / 2f - dimensions.getHeight() / 2.23f;
+-        double endX = dimensions.getWidth() / 2f + dimensions.getHeight() / 2.23f;
+-        int currX = (int) startX;
+-        int currY = 0;
+-        int xIncrement = (int) (endX - startX) / size;
+-        int yIncrement = (int) (endX - startX) / size;
+-        for(int i = 0; i < newWorld.length; i++)
+-        {
+-            for(int j = 0; j < newWorld[i].length; j++)
+-            {
+-                world[i][j] = new Tile(xIncrement, currX,currY, j, world.length - i - 1,
+-                        newWorld[i][j] == 1, ui);
+-                containerPanel.add(world[i][j].tile);
+-
+-                currX += xIncrement;
+-            }
+-            currX = (int) startX;
+-            currY += yIncrement;
+-        }
+-        frame.add(containerPanel);
+-        frame.repaint();
+-    }
+-
+-    public void regenMap()
+-    {
+-        size = ui.size;
+-        rng = new Random(ui.seed);
+-        frame.remove(containerPanel);
+-        containerPanel = new JPanel();
+-        containerPanel.setLayout(null);
+-        containerPanel.setSize(frame.getWidth(),frame.getHeight());
+-
+-        world = new Tile[size][size];
+-
+-        Dimension dimensions = frame.getSize();
+-        double startX = dimensions.getWidth() / 2f - dimensions.getHeight() / 2.23f;
+-        double endX = dimensions.getWidth() / 2f + dimensions.getHeight() / 2.23f;
+-        int currX = (int) startX;
+-        int currY = 0;
+-        int xIncrement = (int) (endX - startX) / size;
+-        int yIncrement = (int) (endX - startX) / size;
+-        for(int i = 0; i < world.length; i++)
+-        {
+-            for(int j = 0; j < world[i].length; j++)
+-            {
+-                if(rng.nextFloat() > 1 - DEFAULT_DIFFICULTY)
+-                {
+-                    world[i][j] = new Tile(xIncrement, currX,currY, j, world.length - i - 1, false, ui);
+-                }
+-                else
+-                {
+-                    world[i][j] = new Tile(xIncrement, currX,currY, j, world.length - i - 1, true, ui);
+-                }
+-                containerPanel.add(world[i][j].tile);
+-
+-                currX += xIncrement;
+-            }
+-            currX = (int) startX;
+-            currY += yIncrement;
+-        }
+-
+-        frame.add(containerPanel);
+-        frame.repaint();
+-    }
+-
+-    private Point arrayIndexToPoint(int row, int col)
+-    {
+-        return new Point(col, world.length - row - 1);
+-    }
+-
+-    public boolean onTheMap(Point p)
+-    {
+-        return (p.x < size && p.x >= 0 && p.y < size && p.y >= 0);
+-    }
+-
+-    public boolean isTraversable(Point p)
+-    {
+-        int[] indices = pointToArrayIndex(p);
+-        return world[indices[0]][indices[1]].traversable;
+-    }
+-
+-    public int[] pointToArrayIndex(Point p)
+-    {
+-        return new int[] {world.length - p.y - 1, p.x};
+-    }
+-
+-    public void highlightTile(Point p, Color c)
+-    {
+-        int[] indices = pointToArrayIndex(p);
+-        world[indices[0]][indices[1]].tile.setBackground(c);
+-    }
+-
+-    public void highlightTiles(List<Point> points, Color c)
+-    {
+-        for(Point p : points)
+-        {
+-            highlightTile(p, c);
+-        }
+-        frame.repaint();
+-    }
+-
+-    public void resetHighlights()
+-    {
+-        for(int i = 0; i < world.length; i++)
+-        {
+-            for (int j = 0; j < world[i].length; j++)
+-            {
+-                if(world[i][j].traversable)
+-                {
+-                    world[i][j].tile.setBackground(Color.white);
+-                }
+-                else
+-                {
+-                    world[i][j].tile.setBackground(Color.red);
+-                }
+-            }
+-        }
+-        frame.repaint();
+-    }
+-
+-    public int getSize()
+-    {
+-        return size;
+-    }
+-
+-    public void setSize(int size)
+-    {
+-        this.size = size;
+-        ui.sizeText.setText("" + size);
+-        ui.size = size;
+-    }
+-
+-    public void setSeed(int seed)
+-    {
+-        this.seed = seed;
+-        ui.seedText.setText("" + seed);
+-        ui.seed = seed;
+-    }
+-
+-    public String saveString()
+-    {
+-        String str = "";
+-        for(int i = 0; i < world.length; i++)
+-        {
+-            for(int j = 0; j < world[i].length; j++)
+-            {
+-                if(world[i][j].traversable)
+-                {
+-                    str += "1 ";
+-                }
+-                else
+-                {
+-                    str += "0 ";
+-                }
+-            }
+-            str += "\n";
+-        }
+-        return str;
+-    }
+-
+-}
+-
+Index: src/CodeWars/engine/client/PathfindingDriver.java
+===================================================================
+diff --git a/src/CodeWars/engine/client/PathfindingDriver.java b/src/CodeWars/engine/client/PathfindingDriver.java
+deleted file mode 100644
+--- a/src/CodeWars/engine/client/PathfindingDriver.java	(revision d6d25f4383ff4e7e10736bb2898c17547104ae39)
++++ /dev/null	(revision d6d25f4383ff4e7e10736bb2898c17547104ae39)
+@@ -1,142 +0,0 @@
+-package CodeWars.engine.client;
+-
+-import java.awt.*;
+-import java.io.IOException;
+-import java.util.*;
+-import java.util.List;
+-
+-public class PathfindingDriver
+-{
+-    public static void main(String[] args) throws IOException
+-    {
+-        UI ui = new UI();
+-        Map map = new Map(ui);
+-        /*
+-        if you want to load a map immediately after the program starts do it like this:
+-        --------------------------------------------------------------------------------
+-        UI ui = new UI();
+-        Map map = new Map(ui);
+-        map.loadFile("devious.plmap");
+-        --------------------------------------------------------------------------------
+-        */
+-
+-    }
+-
+-    public static List<Point> shortestPath(Map map, Point initial, Point destination)
+-    {
+-        PriorityQueue<Node> unvisitedNodes = new PriorityQueue<>();
+-        HashSet<Node> visitedNodes = new HashSet<>();
+-        HashMap<Point, Integer> distances = new HashMap<>();
+-
+-        Node currentNode = new Node(initial, 0, null);
+-        unvisitedNodes.add(currentNode);
+-
+-        for(int x = 0; x < map.getSize(); x++)
+-        {
+-            for(int y = 0; y < map.getSize(); y++)
+-            {
+-                distances.put(new Point(x,y), Integer.MAX_VALUE);
+-            }
+-        }
+-
+-        while(!unvisitedNodes.isEmpty() && !currentNode.position.equals(destination))
+-        {
+-            currentNode = unvisitedNodes.remove();
+-            visitedNodes.add(currentNode);
+-            Node north = new Node(
+-                    new Point(currentNode.position.x, currentNode.position.y + 1),
+-                    currentNode.cost + 1,
+-                    currentNode);
+-            Node east = new Node(
+-                    new Point(currentNode.position.x + 1, currentNode.position.y),
+-                    currentNode.cost + 1,
+-                    currentNode);
+-            Node south = new Node(
+-                    new Point(currentNode.position.x, currentNode.position.y - 1),
+-                    currentNode.cost + 1,
+-                    currentNode);
+-            Node west = new Node(
+-                    new Point(currentNode.position.x - 1, currentNode.position.y),
+-                    currentNode.cost + 1,
+-                    currentNode);
+-            if(!visitedNodes.contains(north) && map.onTheMap(north.position) && map.isTraversable(north.position))
+-            {
+-                if(currentNode.cost + 1 < distances.get(north.position))
+-                {
+-                    distances.put(north.position, currentNode.cost + 1);
+-                    unvisitedNodes.add(new Node(north.position, currentNode.cost + 1, currentNode));
+-                }
+-            }
+-            if(!visitedNodes.contains(east) && map.onTheMap(east.position) && map.isTraversable(east.position))
+-            {
+-                if(currentNode.cost + 1 < distances.get(east.position))
+-                {
+-                    distances.put(east.position, currentNode.cost + 1);
+-                    unvisitedNodes.add(new Node(east.position, currentNode.cost + 1, currentNode));
+-                }
+-            }
+-            if(!visitedNodes.contains(south) && map.onTheMap(south.position) && map.isTraversable(south.position))
+-            {
+-                if(currentNode.cost + 1 < distances.get(south.position))
+-                {
+-                    distances.put(south.position, currentNode.cost + 1);
+-                    unvisitedNodes.add(new Node(south.position, currentNode.cost + 1, currentNode));
+-                }
+-            }
+-            if(!visitedNodes.contains(west) && map.onTheMap(west.position) && map.isTraversable(west.position))
+-            {
+-                if(currentNode.cost + 1 < distances.get(west.position))
+-                {
+-                    distances.put(west.position, currentNode.cost + 1);
+-                    unvisitedNodes.add(new Node(west.position, currentNode.cost + 1, currentNode));
+-                }
+-            }
+-        }
+-        
+-        ArrayList<Point> points = new ArrayList<>();
+-        
+-        Node tempNode = currentNode;
+-        while (tempNode.previous != null)
+-        {
+-            points.add(tempNode.position);
+-            tempNode = tempNode.previous;
+-        }
+-        return points;
+-    }
+-
+-
+-    static class Node implements Comparable
+-    {
+-        public Point position;
+-        public int cost;
+-        public Node previous;
+-
+-        public Node(Point position, int cost, Node previous)
+-        {
+-            this.position = position;
+-            this.cost = cost;
+-            this.previous = previous;
+-        }
+-
+-        @Override
+-        public boolean equals(Object obj)
+-        {
+-            Node other = (Node) obj;
+-            return other.position.equals(position);
+-        }
+-
+-        @Override
+-        public int hashCode()
+-        {
+-            return Objects.hash(position);
+-        }
+-
+-        @Override
+-        public int compareTo(Object o)
+-        {
+-            Node node = (Node) o;
+-            return Integer.compare(cost, node.cost);
+-        }
+-    }
+-}
+-
+Index: src/CodeWars/engine/client/Utilities.java
+===================================================================
+diff --git a/src/CodeWars/engine/client/Utilities.java b/src/CodeWars/engine/client/Utilities.java
+deleted file mode 100644
+--- a/src/CodeWars/engine/client/Utilities.java	(revision d6d25f4383ff4e7e10736bb2898c17547104ae39)
++++ /dev/null	(revision d6d25f4383ff4e7e10736bb2898c17547104ae39)
+@@ -1,67 +0,0 @@
+-package CodeWars.engine.client;
+-import java.io.File;
+-import java.io.FileReader;
+-import java.io.IOException;
+-import java.util.Scanner;
+-
+-public class Utilities
+-{
+-    public static int getFileSize(File file)throws IOException
+-    {
+-        Scanner input = new Scanner(new FileReader(file));
+-        int size=0;
+-        while (input.hasNextLine())				//while there is another line in the file
+-        {
+-            size++;										//add to the size
+-            input.nextLine();							//go to the next line in the file
+-        }
+-        input.close();									//always close the files when you are done
+-        return size;
+-    }
+-
+-    //pre:  "fileName" is the name of a real file containing lines of text - the first line intended to be unused
+-    //post:returns a String array of all the elements in <filename>.txt, with index 0 unused (heap) O(n)
+-    public static String[] readFile(File file)throws IOException
+-    {
+-        int size = getFileSize(file);        //holds the # of elements in the file
+-        String[] list = new String[size];        //a heap will not use index 0;
+-        Scanner input = new Scanner(new FileReader(file));
+-        int i = 0;                                            //index for placement in the array
+-        String line;
+-        while (input.hasNextLine())                //while there is another line in the file
+-        {
+-            line = input.nextLine();                    //read in the next Line in the file and store it in line
+-            list[i] = line;                                //add the line into the array
+-            i++;                                            //advance the index of the array
+-        }
+-        input.close();
+-        return list;
+-    }
+-
+-    public static String[] readFile(String filePath)throws IOException
+-    {
+-        File file = new File(filePath);
+-        int size = getFileSize(file);        //holds the # of elements in the file
+-        String[] list = new String[size];        //a heap will not use index 0;
+-        Scanner input = new Scanner(new FileReader(file));
+-        int i = 0;                                            //index for placement in the array
+-        String line;
+-        while (input.hasNextLine())                //while there is another line in the file
+-        {
+-            line = input.nextLine();                    //read in the next Line in the file and store it in line
+-            list[i] = line;                                //add the line into the array
+-            i++;                                            //advance the index of the array
+-        }
+-        input.close();
+-        return list;
+-    }
+-    public static void pauseExecution(int millis)
+-    {
+-        long finalTime = System.currentTimeMillis() + millis;
+-        long currentTimeMillis;
+-        do
+-        {
+-            currentTimeMillis = System.currentTimeMillis();
+-        }while(currentTimeMillis < finalTime);
+-    }
+-}
+Index: src/CodeWars/engine/client/UI.java
+===================================================================
+diff --git a/src/CodeWars/engine/client/UI.java b/src/CodeWars/engine/client/UI.java
+deleted file mode 100644
+--- a/src/CodeWars/engine/client/UI.java	(revision d6d25f4383ff4e7e10736bb2898c17547104ae39)
++++ /dev/null	(revision d6d25f4383ff4e7e10736bb2898c17547104ae39)
+@@ -1,189 +0,0 @@
+-package CodeWars.engine.client;
+-import javax.swing.*;
+-import javax.swing.filechooser.FileNameExtensionFilter;
+-import java.awt.*;
+-import java.awt.event.ActionEvent;
+-import java.awt.event.ActionListener;
+-import java.io.File;
+-import java.io.FileWriter;
+-import java.io.IOException;
+-import java.util.List;
+-//870896112
+-public class UI
+-{
+-    public JFrame frame;
+-    public JPanel buttonsPanel;
+-    public Map map;
+-    public JTextField sizeText;
+-    public JTextField seedText;
+-    public JLabel mousePosition;
+-    public int size;
+-    public int seed;
+-    public UI()
+-    {
+-        frame = new JFrame("PathfindingLab");
+-        frame.setSize(1000,800);
+-        frame.setLayout(null);
+-        //frame.setResizable(false);
+-
+-        JMenu menu;
+-        JMenuItem load = new JMenuItem(new LoadAction());
+-        JMenuItem save = new JMenuItem(new SaveAction());
+-        JMenuBar mb = new JMenuBar();
+-        menu = new JMenu("File");
+-        menu.add(load);
+-        menu.add(save);
+-        mb.add(menu);
+-        frame.setJMenuBar(mb);
+-
+-
+-        buttonsPanel = new JPanel();
+-        buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.PAGE_AXIS));
+-        buttonsPanel.setBounds(0,0, 141, 800);
+-
+-        JButton startButton = new JButton("Start");
+-        startButton.addActionListener(new StartAction());
+-        buttonsPanel.add(startButton);
+-
+-        JButton resetButton = new JButton("Reset");
+-        resetButton.addActionListener(new ResetAction());
+-        buttonsPanel.add(resetButton);
+-
+-        JButton regenButton = new JButton("Regenerate");
+-        regenButton.addActionListener(new RegenAction());
+-        buttonsPanel.add(regenButton);
+-
+-        sizeText = new JTextField("" + Map.DEFAULT_MAP_SIZE);
+-        sizeText.setPreferredSize( new Dimension(200,50));
+-        sizeText.setMaximumSize(sizeText.getPreferredSize());
+-        buttonsPanel.add(sizeText);
+-
+-        seedText = new JTextField("" + Map.DEFAULT_MAP_SEED);
+-        seedText.setPreferredSize( new Dimension(200,30));
+-        seedText.setMaximumSize(sizeText.getPreferredSize());
+-        buttonsPanel.add(seedText);
+-
+-        mousePosition = new JLabel("Mouse Position: ");
+-        buttonsPanel.add(mousePosition);
+-
+-        size = Integer.parseInt(sizeText.getText());
+-        seed = Integer.parseInt(seedText.getText());
+-
+-        frame.add(buttonsPanel);
+-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+-        frame.setVisible(true);
+-    }
+-
+-    public void setMap(Map map)
+-    {
+-        this.map = map;
+-    }
+-
+-    class LoadAction extends AbstractAction
+-    {
+-        public LoadAction() {
+-            super("Load");
+-        }
+-
+-        @Override
+-        public void actionPerformed(ActionEvent e)
+-        {
+-            JFileChooser j = new JFileChooser();
+-            j.setFileFilter(new FileNameExtensionFilter("*.plmap", "plmap"));
+-            int result = j.showOpenDialog(frame);
+-            if (result == JFileChooser.APPROVE_OPTION) {
+-                File selectedFile = j.getSelectedFile();
+-                try
+-                {
+-                    map.loadFile(selectedFile);
+-                } catch (IOException ex)
+-                {
+-                    throw new RuntimeException(ex);
+-                }
+-            }
+-        }
+-    }
+-
+-    class SaveAction extends AbstractAction
+-    {
+-        public SaveAction() {
+-            super("Save");
+-        }
+-
+-        @Override
+-        public void actionPerformed(ActionEvent e)
+-        {
+-            JFileChooser j = new JFileChooser();
+-            j.setFileFilter(new FileNameExtensionFilter("*.plmap", "plmap"));
+-            int result = j.showSaveDialog(frame);
+-            if (result == JFileChooser.APPROVE_OPTION) {
+-                try
+-                {
+-                    FileWriter fw = new FileWriter(j.getSelectedFile().getName() + ".plmap");
+-                    fw.write(map.saveString());
+-                    fw.close();
+-                } catch (IOException ex)
+-                {
+-                    throw new RuntimeException(ex);
+-                }
+-            }
+-        }
+-    }
+-
+-    class StartAction implements ActionListener
+-    {
+-        @Override
+-        public void actionPerformed(ActionEvent e)
+-        {
+-            map.resetHighlights();
+-            List<Point> points = PathfindingDriver.shortestPath(map, new Point(0,0), new Point(map.getSize() - 1, map.getSize() - 1));
+-            map.highlightTiles(points, new Color(0,255,255));
+-        }
+-    }
+-
+-    class ResetAction implements ActionListener
+-    {
+-        @Override
+-        public void actionPerformed(ActionEvent e)
+-        {
+-            map.resetHighlights();
+-        }
+-    }
+-
+-    class RegenAction implements ActionListener
+-    {
+-        @Override
+-        public void actionPerformed(ActionEvent e)
+-        {
+-            String tempSizeText = sizeText.getText();
+-            String tempSeedText = seedText.getText();
+-
+-            try
+-            {
+-                size = Integer.parseInt(tempSizeText);
+-                size = Math.min(Math.max(size, 10), 50);
+-
+-                sizeText.setText("" + size);
+-
+-                if(Integer.parseInt(tempSeedText) == seed)
+-                {
+-                    seed = (int) ((Math.random() * ((long) Integer.MAX_VALUE - Integer.MIN_VALUE)) + Integer.MIN_VALUE);
+-                    seedText.setText("" + seed);
+-                }
+-                else
+-                {
+-                    seed = Integer.parseInt(tempSeedText);
+-                }
+-
+-                map.setSize(size);
+-                map.setSeed(seed);
+-
+-                map.regenMap();
+-            }
+-            catch(Exception exception)
+-            {
+-               throw new RuntimeException("Size or Seed cannot be parsed!");
+-            }
+-        }
+-    }
+-}
+Index: src/CodeWars/engine/client/TilePanel.java
+===================================================================
+diff --git a/src/CodeWars/engine/client/TilePanel.java b/src/CodeWars/engine/client/TilePanel.java
+deleted file mode 100644
+--- a/src/CodeWars/engine/client/TilePanel.java	(revision d6d25f4383ff4e7e10736bb2898c17547104ae39)
++++ /dev/null	(revision d6d25f4383ff4e7e10736bb2898c17547104ae39)
+@@ -1,70 +0,0 @@
+-package CodeWars.engine.client;
+-import javax.swing.*;
+-import java.awt.*;
+-import java.awt.event.MouseAdapter;
+-import java.awt.event.MouseEvent;
+-
+-public class TilePanel extends JPanel
+-{
+-    public boolean traversable;
+-    public Tile parentTile;
+-    public TilePanel(int size, int xPos, int yPos, boolean traversable, Tile parentTile, UI ui)
+-    {
+-        super();
+-        setLocation(xPos, yPos);
+-        setSize(size,size);
+-        setBorder(BorderFactory.createLineBorder(Color.black));
+-        //setMinimumSize(new Dimension(size, size));
+-
+-        this.traversable = traversable;
+-        this.parentTile = parentTile;
+-
+-        if(traversable)
+-        {
+-            setBackground(Color.WHITE);
+-        }
+-        else
+-        {
+-            setBackground(Color.RED);
+-        }
+-
+-        addMouseListener(new MouseAdapter()
+-        {
+-            @Override
+-            public void mousePressed(MouseEvent e)
+-            {
+-                setTraversable(!getTraversable());
+-                updateParentTile();
+-                if(getTraversable())
+-                {
+-                    setBackground(Color.WHITE);
+-                }
+-                else
+-                {
+-                    setBackground(Color.RED);
+-                }
+-            }
+-
+-            @Override
+-            public void mouseEntered(MouseEvent e)
+-            {
+-                ui.mousePosition.setText("Position: " + parentTile.x + ", " + parentTile.y);
+-            }
+-        });
+-    }
+-
+-    public void setTraversable(boolean traversable)
+-    {
+-        this.traversable = traversable;
+-    }
+-
+-    public boolean getTraversable()
+-    {
+-        return traversable;
+-    }
+-
+-    public void updateParentTile()
+-    {
+-        parentTile.traversable = traversable;
+-    }
+-}
+Index: src/CodeWars/engine/client/Tile.java
+===================================================================
+diff --git a/src/CodeWars/engine/client/Tile.java b/src/CodeWars/engine/client/Tile.java
+deleted file mode 100644
+--- a/src/CodeWars/engine/client/Tile.java	(revision d6d25f4383ff4e7e10736bb2898c17547104ae39)
++++ /dev/null	(revision d6d25f4383ff4e7e10736bb2898c17547104ae39)
+@@ -1,16 +0,0 @@
+-package CodeWars.engine.client;
+-public class Tile
+-{
+-    public TilePanel tile;
+-    public int x;
+-    public int y;
+-    public boolean traversable;
+-
+-    public Tile(int size, int xPos, int yPos, int xCoord, int yCoord, boolean traversable, UI ui)
+-    {
+-        this.tile = new TilePanel(size, xPos, yPos, traversable, this, ui);
+-        this.x = xCoord;
+-        this.y = yCoord;
+-        this.traversable = traversable;
+-    }
+-}
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"3cd76a97-2922-4c9c-8a31-f31c0123d23e\" name=\"Changes\" comment=\"altered structure\">\r\n      <change afterPath=\"$PROJECT_DIR$/.idea/uiDesigner.xml\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/CodeWars/engine/Direction.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/CodeWars/engine/GameConstants.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/CodeWars/engine/GameWorld.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/CodeWars/engine/Main.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/CodeWars/engine/MapTile.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/CodeWars/engine/Point.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\r\n    </list>\r\n    <list id=\"2cfe8a18-1c19-4993-8531-d9849a380bd0\" name=\"Changes by Jack\" comment=\"\" />\r\n    <list id=\"2f3b03d6-b12e-4b83-86e1-87fa8f53cb92\" name=\"Changes by sethlifland\" comment=\"\">\r\n      <change beforePath=\"$PROJECT_DIR$/src/CodeWars/Main.java\" beforeDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"Enum\" />\r\n        <option value=\"Class\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"ProblemsViewState\">\r\n    <option name=\"selectedTabId\" value=\"CurrentFile\" />\r\n  </component>\r\n  <component name=\"ProjectColorInfo\"><![CDATA[{\r\n  \"associatedIndex\": 3\r\n}]]></component>\r\n  <component name=\"ProjectId\" id=\"2cpFFRjTMWkDaRnGjOsfRcsmnrp\" />\r\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\" />\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\"><![CDATA[{\r\n  \"keyToString\": {\r\n    \"RunOnceActivity.OpenProjectViewOnStart\": \"true\",\r\n    \"RunOnceActivity.ShowReadmeOnStart\": \"true\",\r\n    \"SHARE_PROJECT_CONFIGURATION_FILES\": \"true\",\r\n    \"WebServerToolWindowFactoryState\": \"false\",\r\n    \"git-widget-placeholder\": \"master\",\r\n    \"jdk.selected.JAVA_MODULE\": \"corretto-19\",\r\n    \"node.js.detected.package.eslint\": \"true\",\r\n    \"node.js.detected.package.tslint\": \"true\",\r\n    \"node.js.selected.package.eslint\": \"(autodetect)\",\r\n    \"node.js.selected.package.tslint\": \"(autodetect)\",\r\n    \"project.structure.last.edited\": \"Modules\",\r\n    \"project.structure.proportion\": \"0.0\",\r\n    \"project.structure.side.proportion\": \"0.0\",\r\n    \"vue.rearranger.settings.migration\": \"true\"\r\n  }\r\n}]]></component>\r\n  <component name=\"RunManager\">\r\n    <configuration name=\"Client\" type=\"Application\" factoryName=\"Application\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <option name=\"MAIN_CLASS_NAME\" value=\"CodeWars.engine.client.Client\" />\r\n      <module name=\"CodeWars\" />\r\n      <extension name=\"coverage\">\r\n        <pattern>\r\n          <option name=\"PATTERN\" value=\"CodeWars.engine.client.*\" />\r\n          <option name=\"ENABLED\" value=\"true\" />\r\n        </pattern>\r\n      </extension>\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <recent_temporary>\r\n      <list>\r\n        <item itemvalue=\"Application.Client\" />\r\n      </list>\r\n    </recent_temporary>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"3cd76a97-2922-4c9c-8a31-f31c0123d23e\" name=\"Changes\" comment=\"\" />\r\n      <created>1708800508674</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1708800508674</updated>\r\n      <workItem from=\"1708800509675\" duration=\"7102000\" />\r\n    </task>\r\n    <task id=\"LOCAL-00001\" summary=\"altered structure\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1708800976735</created>\r\n      <option name=\"number\" value=\"00001\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1708800976735</updated>\r\n    </task>\r\n    <option name=\"localTasksCounter\" value=\"2\" />\r\n    <servers />\r\n  </component>\r\n  <component name=\"TypeScriptGeneratedFilesManager\">\r\n    <option name=\"version\" value=\"3\" />\r\n  </component>\r\n  <component name=\"VcsManagerConfiguration\">\r\n    <MESSAGE value=\"altered structure\" />\r\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"altered structure\" />\r\n  </component>\r\n  <component name=\"XDebuggerManager\">\r\n    <breakpoint-manager>\r\n      <breakpoints>\r\n        <breakpoint enabled=\"true\" type=\"java-exception\">\r\n          <properties class=\"java.lang.ArithmeticException\" package=\"java.lang\" />\r\n          <option name=\"timeStamp\" value=\"1\" />\r\n        </breakpoint>\r\n      </breakpoints>\r\n    </breakpoint-manager>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision d6d25f4383ff4e7e10736bb2898c17547104ae39)
++++ b/.idea/workspace.xml	(date 1708809475652)
+@@ -5,19 +5,19 @@
+   </component>
+   <component name="ChangeListManager">
+     <list default="true" id="3cd76a97-2922-4c9c-8a31-f31c0123d23e" name="Changes" comment="altered structure">
+-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/CodeWars/engine/Direction.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/CodeWars/engine/GameConstants.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/CodeWars/engine/GameWorld.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/CodeWars/engine/Main.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/CodeWars/engine/MapTile.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/CodeWars/engine/Point.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+-    </list>
+-    <list id="2cfe8a18-1c19-4993-8531-d9849a380bd0" name="Changes by Jack" comment="" />
+-    <list id="2f3b03d6-b12e-4b83-86e1-87fa8f53cb92" name="Changes by sethlifland" comment="">
+       <change beforePath="$PROJECT_DIR$/src/CodeWars/Main.java" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/CodeWars/engine/Runner.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/CodeWars/engine/Runner.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/CodeWars/engine/client/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/CodeWars/engine/client/Client.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/CodeWars/engine/client/Map.java" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/CodeWars/engine/client/PathfindingDriver.java" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/CodeWars/engine/client/Tile.class" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/CodeWars/engine/client/Tile.java" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/CodeWars/engine/client/UI.class" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/CodeWars/engine/client/UI.java" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/CodeWars/engine/client/Utilities.java" beforeDir="false" />
+     </list>
++    <list id="2cfe8a18-1c19-4993-8531-d9849a380bd0" name="Changes by Jack" comment="" />
++    <list id="2f3b03d6-b12e-4b83-86e1-87fa8f53cb92" name="Changes by sethlifland" comment="" />
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+@@ -37,34 +37,34 @@
+   <component name="ProblemsViewState">
+     <option name="selectedTabId" value="CurrentFile" />
+   </component>
+-  <component name="ProjectColorInfo"><![CDATA[{
+-  "associatedIndex": 3
+-}]]></component>
++  <component name="ProjectColorInfo">{
++  &quot;associatedIndex&quot;: 3
++}</component>
+   <component name="ProjectId" id="2cpFFRjTMWkDaRnGjOsfRcsmnrp" />
+   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+   <component name="ProjectViewState">
+     <option name="hideEmptyMiddlePackages" value="true" />
+     <option name="showLibraryContents" value="true" />
+   </component>
+-  <component name="PropertiesComponent"><![CDATA[{
+-  "keyToString": {
+-    "RunOnceActivity.OpenProjectViewOnStart": "true",
+-    "RunOnceActivity.ShowReadmeOnStart": "true",
+-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+-    "WebServerToolWindowFactoryState": "false",
+-    "git-widget-placeholder": "master",
+-    "jdk.selected.JAVA_MODULE": "corretto-19",
+-    "node.js.detected.package.eslint": "true",
+-    "node.js.detected.package.tslint": "true",
+-    "node.js.selected.package.eslint": "(autodetect)",
+-    "node.js.selected.package.tslint": "(autodetect)",
+-    "project.structure.last.edited": "Modules",
+-    "project.structure.proportion": "0.0",
+-    "project.structure.side.proportion": "0.0",
+-    "vue.rearranger.settings.migration": "true"
++  <component name="PropertiesComponent">{
++  &quot;keyToString&quot;: {
++    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
++    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
++    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
++    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
++    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
++    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;corretto-19&quot;,
++    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
++    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
++    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
++    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
++    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
++    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
++    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
++    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+   }
+-}]]></component>
+-  <component name="RunManager">
++}</component>
++  <component name="RunManager" selected="Application.Main">
+     <configuration name="Client" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+       <option name="MAIN_CLASS_NAME" value="CodeWars.engine.client.Client" />
+       <module name="CodeWars" />
+@@ -78,8 +78,22 @@
+         <option name="Make" enabled="true" />
+       </method>
+     </configuration>
++    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
++      <option name="MAIN_CLASS_NAME" value="CodeWars.engine.Main" />
++      <module name="CodeWars" />
++      <extension name="coverage">
++        <pattern>
++          <option name="PATTERN" value="CodeWars.engine.*" />
++          <option name="ENABLED" value="true" />
++        </pattern>
++      </extension>
++      <method v="2">
++        <option name="Make" enabled="true" />
++      </method>
++    </configuration>
+     <recent_temporary>
+       <list>
++        <item itemvalue="Application.Main" />
+         <item itemvalue="Application.Client" />
+       </list>
+     </recent_temporary>
