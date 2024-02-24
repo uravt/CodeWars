@@ -8,8 +8,7 @@ public class RobotInfo
     protected int attack;
     protected int siliconCost;
     protected int ironCost;
-    protected int xCoordinate;
-    protected int yCoordinate;
+    protected Point position;
     protected int cooldownMove;
     protected int cooldownAttack;
     protected int cooldownMine;
@@ -18,15 +17,14 @@ public class RobotInfo
     protected boolean isBuilding;
 
 
-    protected RobotInfo(int robotType, int xCoordinate, int yCoordinate, boolean isBuilding, GameWorld gameWorld)
+    protected RobotInfo(int robotType, Point position, boolean isBuilding, GameWorld gameWorld)
     {
         this.robotType = robotType;
         this.health = GameConstants.HEALTH[robotType];
         this.attack = GameConstants.ATTACK[robotType];
         this.siliconCost = GameConstants.SILICON_COST[robotType];
         this.ironCost = GameConstants.IRON_COST[robotType];
-        this.xCoordinate = xCoordinate;
-        this.yCoordinate = yCoordinate;
+        this.position = position;
         this.cooldownMove = GameConstants.COOLDOWN_MOVE[robotType];
         this.cooldownAttack = GameConstants.COOLDOWN_ATTACK[robotType];
         this.cooldownMine = GameConstants.COOLDOWN_MINE[robotType];
@@ -42,8 +40,7 @@ public class RobotInfo
         this.attack = GameConstants.ATTACK[robotType];
         this.siliconCost = GameConstants.SILICON_COST[robotType];
         this.ironCost = GameConstants.IRON_COST[robotType];
-        this.xCoordinate = xCoordinate;
-        this.yCoordinate = yCoordinate;
+        this.position = new Point(other.position);
         this.cooldownMove = GameConstants.COOLDOWN_MOVE[robotType];
         this.cooldownAttack = GameConstants.COOLDOWN_ATTACK[robotType];
         this.cooldownMine = GameConstants.COOLDOWN_MINE[robotType];

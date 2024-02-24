@@ -4,10 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3cd76a97-2922-4c9c-8a31-f31c0123d23e" name="Changes" comment="whatever">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/CodeWars/engine/Direction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/CodeWars/engine/Direction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/CodeWars/engine/Runner.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/CodeWars/engine/Runner.java" afterDir="false" />
+    <list default="true" id="3cd76a97-2922-4c9c-8a31-f31c0123d23e" name="Changes" comment="grid stuff">
+      <change afterPath="$PROJECT_DIR$/src/CodeWars/engine/Team.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/CodeWars/engine/GameWorld.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/CodeWars/engine/GameWorld.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/CodeWars/engine/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/CodeWars/engine/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/CodeWars/engine/RobotInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/CodeWars/engine/RobotInfo.java" afterDir="false" />
     </list>
     <list id="2cfe8a18-1c19-4993-8531-d9849a380bd0" name="Changes by Jack" comment="" />
     <list id="2f3b03d6-b12e-4b83-86e1-87fa8f53cb92" name="Changes by sethlifland" comment="" />
@@ -27,18 +28,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "slifland"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;slifland&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/MorbidMight/CodeWars.git",
-    "accountId": "edc0f460-46fd-48e9-8ec2-745f25a03a26"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/MorbidMight/CodeWars.git&quot;,
+    &quot;accountId&quot;: &quot;edc0f460-46fd-48e9-8ec2-745f25a03a26&quot;
   }
-}]]></component>
+}</component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="CurrentFile" />
   </component>
@@ -51,29 +52,29 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.Main.executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "master",
-    "jdk.selected.JAVA_MODULE": "corretto-19",
-    "kotlin-language-version-configured": "true",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.stylelint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.stylelint": "",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;corretto-19&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.stylelint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.stylelint&quot;: &quot;&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="Client" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="CodeWars.engine.client.Client" />
@@ -121,7 +122,15 @@
       <option name="project" value="LOCAL" />
       <updated>1708800976735</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="grid stuff">
+      <option name="closed" value="true" />
+      <created>1708811282572</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1708811282572</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -129,7 +138,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="altered structure" />
-    <option name="LAST_COMMIT_MESSAGE" value="altered structure" />
+    <MESSAGE value="grid stuff" />
+    <option name="LAST_COMMIT_MESSAGE" value="grid stuff" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

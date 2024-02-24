@@ -2,6 +2,8 @@ package CodeWars.engine;
 
 public class GameWorld
 {
+    protected Team teamA;
+    protected Team teamB;
     protected int sizeX;
     protected int sizeY;
 
@@ -9,6 +11,8 @@ public class GameWorld
 
     protected GameWorld(int sizeX, int sizeY)
     {
+        teamA = new Team(0);
+        teamB = new Team(1);
         gameWorld = new MapTile[sizeY][sizeX];
     }
 
