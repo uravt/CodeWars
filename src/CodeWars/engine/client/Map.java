@@ -45,14 +45,7 @@ public class Map
         {
             for(int j = 0; j < world[i].length; j++)
             {
-                if(rng.nextFloat() > 1 - DEFAULT_DIFFICULTY)
-                {
-                    world[i][j] = new Tile(xIncrement, currX,currY, j, world.length - i - 1, false, ui);
-                }
-                else
-                {
                     world[i][j] = new Tile(xIncrement, currX,currY, j, world.length - i - 1, true, ui);
-                }
                 containerPanel.add(world[i][j].tile);
                 containerPanel.repaint();
                 currX += xIncrement;
