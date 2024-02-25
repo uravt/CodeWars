@@ -8,7 +8,6 @@ import java.util.ArrayList;
 
 public class Runner
 {
-    Client client = new Client();
     //constants
 
     //current turn number
@@ -16,8 +15,6 @@ public class Runner
 
     GameWorld world;
     protected GameWorld[] pastTurns;
-
-
 
     //list of all of the robots
     ArrayList<RobotPlayer> robotPlayers;
@@ -33,7 +30,6 @@ public class Runner
         robotPlayers = new ArrayList<>();
         toAdd = new ArrayList<>();
         toRemove = new ArrayList<>();
-        client = new Client();
     }
 
     //increments one turn
@@ -85,6 +81,11 @@ public class Runner
     protected boolean active(){
         System.out.println(turn);
         return turn < GameConstants.MAX_TURN_COUNT;
+    }
+
+    public int getSize()
+    {
+        return world.sizeX;
     }
 }
 

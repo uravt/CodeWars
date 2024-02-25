@@ -45,8 +45,9 @@ public class Map
         {
             for(int j = 0; j < world[i].length; j++)
             {
-                    world[i][j] = new Tile(xIncrement, currX,currY, j, world.length - i - 1, true, ui);
+                world[i][j] = new Tile(xIncrement, currX,currY, j, world.length - i - 1, true, ui);
                 containerPanel.add(world[i][j].tile);
+                containerPanel.revalidate();
                 containerPanel.repaint();
                 currX += xIncrement;
             }

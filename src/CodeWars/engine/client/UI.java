@@ -16,12 +16,12 @@ public class UI
     public JPanel buttonsPanel;
     public Map map;
     public JTextField sizeText;
-    public JTextField seedText;
     public JLabel mousePosition;
     public int size;
-    public int seed;
-    public UI()
+    public UI(int size)
     {
+        this.size = size;
+
         frame = new JFrame("PathfindingLab");
         frame.setSize(1000,800);
         frame.setLayout(null);
@@ -36,7 +36,6 @@ public class UI
         menu.add(save);
         mb.add(menu);
         frame.setJMenuBar(mb);
-
 
         buttonsPanel = new JPanel();
         buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.PAGE_AXIS));
@@ -54,21 +53,8 @@ public class UI
         regenButton.addActionListener(new RegenAction());
         buttonsPanel.add(regenButton);
 
-        sizeText = new JTextField("" + Map.DEFAULT_MAP_SIZE);
-        sizeText.setPreferredSize( new Dimension(200,50));
-        sizeText.setMaximumSize(sizeText.getPreferredSize());
-        buttonsPanel.add(sizeText);
-
-        seedText = new JTextField("" + Map.DEFAULT_MAP_SEED);
-        seedText.setPreferredSize( new Dimension(200,30));
-        seedText.setMaximumSize(sizeText.getPreferredSize());
-        buttonsPanel.add(seedText);
-
         mousePosition = new JLabel("Mouse Position: ");
         buttonsPanel.add(mousePosition);
-
-        size = Integer.parseInt(sizeText.getText());
-        seed = Integer.parseInt(seedText.getText());
 
         frame.add(buttonsPanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -145,7 +131,7 @@ public class UI
         @Override
         public void actionPerformed(ActionEvent e)
         {
-            map.resetHighlights();
+
         }
     }
 
@@ -154,35 +140,7 @@ public class UI
         @Override
         public void actionPerformed(ActionEvent e)
         {
-            String tempSizeText = sizeText.getText();
-            String tempSeedText = seedText.getText();
 
-            try
-            {
-                size = Integer.parseInt(tempSizeText);
-                size = Math.min(Math.max(size, 10), 50);
-
-                sizeText.setText("" + size);
-
-                if(Integer.parseInt(tempSeedText) == seed)
-                {
-                    seed = (int) ((Math.random() * ((long) Integer.MAX_VALUE - Integer.MIN_VALUE)) + Integer.MIN_VALUE);
-                    seedText.setText("" + seed);
-                }
-                else
-                {
-                    seed = Integer.parseInt(tempSeedText);
-                }
-
-                map.setSize(size);
-                map.setSeed(seed);
-
-                map.regenMap();
-            }
-            catch(Exception exception)
-            {
-                throw new RuntimeException("Size or Seed cannot be parsed!");
-            }
         }
     }
 }

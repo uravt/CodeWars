@@ -32,6 +32,20 @@ public class RobotInfo
 
     public RobotInfo(RobotInfo other)
     {
+        if(other == null)
+        {
+            this.robotType = -1;
+            this.health = -1;
+            this.attack = -1;
+            this.siliconCost = -1;
+            this.ironCost = -1;
+            this.position = null;
+            this.cooldownMove = -1;
+            this.cooldownAction = -1;
+            this.visionRadius = -1;
+            this.isBuilding = false;
+            return;
+        }
         this.robotType = other.robotType;
         this.health = other.health;
         this.attack = other.attack;

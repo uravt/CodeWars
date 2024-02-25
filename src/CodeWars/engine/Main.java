@@ -1,12 +1,15 @@
 package CodeWars.engine;
 
+import CodeWars.engine.client.Client;
+
 public class Main
 {
     public static void main(String[] args)
     {
         Runner runner = new Runner();
-        while(runner.active()){
+        Client client = new Client(runner);
+        /*while(runner.active()){
             runner.update();
-        }
+        }*/
     }
 }

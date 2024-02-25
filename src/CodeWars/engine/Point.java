@@ -74,6 +74,10 @@ public class Point
     public MapTile pointAsMapTile(GameWorld gw){
         return gw.gameWorld[x][gw.sizeY - y - 1];
     }
+    public static Point indexToTile(int row, int col, GameWorld gw)
+    {
+        return new Point(col, gw.sizeY - row - 1);
+    }
 
     public int distanceSquaredTo(Point p) {
         return (int)Math.pow(Math.sqrt((x - p.x) * (x - p.x) + (y - p.y) * (y - p.y)), 2);
