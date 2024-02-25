@@ -57,4 +57,20 @@ public class RobotInfo
         this.visionRadius = GameConstants.VISION_RADIUS[robotType];
         this.isBuilding = isBuilding;
     }
+
+    public int getHealth(){
+        return health;
+    }
+
+    public int getPlayerOwner(){
+        return playerOwner;
+    }
+
+    public int getRobotType(){
+        return robotType;
+    }
+
+    public Point getPosition(){
+        return position;
+    }
 }

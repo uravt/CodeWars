@@ -1,5 +1,10 @@
 package CodeWars.engine;
 
+import java.util.ArrayList;
+
+import static java.lang.Math.ceil;
+import static java.lang.Math.floor;
+
 public class RobotUser
 {
     private RobotInfo robotInfo;
@@ -187,6 +192,84 @@ public class RobotUser
         actionCooldown += 10;
         robotInfo.cooldownAction = actionCooldown;
         return true;
+    }
+
+    private boolean inside_circle(Point center, Point tile, double radius) {
+        double dx = center.x - tile.x,
+                dy = center.y - tile.y;
+        double distance_squared = dx*dx + dy*dy;
+        return distance_squared <= radius*radius;
+    }
+
+    //returns the robot info of all robots in the radius of sqrt(radiusSquared), belonging to team team, and originating at point center
+    public ArrayList<RobotInfo> getNearbyRobots(int radiusSquared, int team, Point center){
+        ArrayList<RobotInfo> nearbyRobots = new ArrayList<>();
+        double radius = Math.sqrt(radiusSquared);
+        int top    =  (int)ceil(center.y - radius);
+        int bottom = (int)floor(center.y + radius);
+        int left   =  (int)ceil(center.x - radius);
+        int  right  = (int)floor(center.x + radius);
+
+        for (int y = top; y <= bottom; y++) {
+            for (int x = left; x <= right; x++) {
+                Point temp = new Point(x, y);
+                if (inside_circle(center, temp, radius)) {
+                    MapTile tempTile = temp.pointAsMapTile(world);
+                    if(tempTile.robotInfoOnTile != null && tempTile.robotInfoOnTile.playerOwner == team) {
+                        nearbyRobots.add(tempTile.robotInfoOnTile);
+                    }
+                }
+            }
+        }
+        return nearbyRobots;
+    }
+
+    //returns the robot info of all robots in the radius of sqrt(radiusSquared), belonging to team team, and originating at the current robots position
+    public ArrayList<RobotInfo> getNearbyRobots(int radiusSquared, int team){
+        ArrayList<RobotInfo> nearbyRobots = new ArrayList<>();
+        Point center = position;
+        double radius = Math.sqrt(radiusSquared);
+        int top    =  (int)ceil(center.y - radius);
+        int bottom = (int)floor(center.y + radius);
+        int left   =  (int)ceil(center.x - radius);
+        int  right  = (int)floor(center.x + radius);
+
+        for (int y = top; y <= bottom; y++) {
+            for (int x = left; x <= right; x++) {
+                Point temp = new Point(x, y);
+                if (inside_circle(center, temp, radius)) {
+                    MapTile tempTile = temp.pointAsMapTile(world);
+                    if(tempTile.robotInfoOnTile != null && tempTile.robotInfoOnTile.playerOwner == team) {
+                        nearbyRobots.add(tempTile.robotInfoOnTile);
+                    }
+                }
+            }
+        }
+        return nearbyRobots;
+    }
+
+    //returns the robot info of all robots in the radius of sqrt(radiusSquared) belonging to either team and starting at the players current point
+    public ArrayList<RobotInfo> getNearbyRobots(int radiusSquared){
+        ArrayList<RobotInfo> nearbyRobots = new ArrayList<>();
+        Point center = position;
+        double radius = Math.sqrt(radiusSquared);
+        int top    =  (int)ceil(center.y - radius);
+        int bottom = (int)floor(center.y + radius);
+        int left   =  (int)ceil(center.x - radius);
+        int  right  = (int)floor(center.x + radius);
+
+        for (int y = top; y <= bottom; y++) {
+            for (int x = left; x <= right; x++) {
+                Point temp = new Point(x, y);
+                if (inside_circle(center, temp, radius)) {
+                    MapTile tempTile = temp.pointAsMapTile(world);
+                    if(tempTile.robotInfoOnTile != null) {
+                        nearbyRobots.add(tempTile.robotInfoOnTile);
+                    }
+                }
+            }
+        }
+        return nearbyRobots;
     }
 
     private boolean onMap(Point p){
