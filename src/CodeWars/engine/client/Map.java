@@ -24,7 +24,6 @@ public class Map
     {
         this.frame = ui.frame;
         this.size = ui.size;
-        this.seed = ui.seed;
         this.ui = ui;
         rng = new Random(seed);
         world = new Tile[size][size];
@@ -154,7 +153,6 @@ public class Map
     public void regenMap()
     {
         size = ui.size;
-        rng = new Random(ui.seed);
         frame.remove(containerPanel);
         containerPanel = new JPanel();
         containerPanel.setLayout(null);
@@ -260,12 +258,6 @@ public class Map
         ui.size = size;
     }
 
-    public void setSeed(int seed)
-    {
-        this.seed = seed;
-        ui.seedText.setText("" + seed);
-        ui.seed = seed;
-    }
 
     public String saveString()
     {
